@@ -11,3 +11,6 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+    DISPLAYSURF.fill((255, 255, 255))
+    pygame.draw.rect(DISPLAYSURF, (255, 0, 0), (100, 80, 150, 50))
+    pygame.display.update()
