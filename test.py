@@ -3,7 +3,7 @@ from pygame.locals import *
 
 pygame.init()
 
-DISPLAYSURF = pygame.display.set_mode((400, 300))
+DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption('Hello world!')
 
 while True:
