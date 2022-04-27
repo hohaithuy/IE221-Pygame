@@ -1,0 +1,5 @@
+git add . "Add file"
+git commit -m '<Message>'    "Commit vao, them message de biet update cai gi"
+git push  "Up len mang"
+
+git pull "Lay ve neu t update"
