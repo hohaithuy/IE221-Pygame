@@ -1,0 +1,68 @@
+3 background
+
+1 dơi
+1 boss golem
+1 slime
+1 cóc
+1 meow
+
+Object:
+	- Đường đi
+	- Tường
+
+Chung class: 	(x, y) - tọa độ
+		(h, w) - chiều cao - rộng ô vuông object
+		health - máu
+		DmgAttack
+		isExist - tồn tại
+		isRotate
+		
+	+ Function:
+	setX, setY
+	getX, getY
+	getHP
+	setHP
+	setExist
+
+Class con:
+	+ Meow
+		Thuộc tính:
+		Phương thức:
+			- Init 
+			- Jump
+			- Run
+			- Attack (1 máu)
+			- Skill (2 máu)
+			- Dodge(Nếu có)
+			- Take Dmg
+			- Death
+	+ Cóc 
+		Thuộc tính:
+		Phương thức:
+			- Init (10 máu)
+			- Run
+			- Attack: (Charge + trans + attack)
+			- Take Dmg
+			- Death
+
+	+ Dơi	
+		Thuộc tính:
+		Phương thức:
+			- Init (1 máu)
+			- Attack
+			- TakeDmg
+			- Death
+	+ Slime
+		Thuộc tính:
+			isDisaperd - Có nấp không
+		Phương thức:
+			- Init (2 máu)
+			- Attack (Hop + Attack)
+			- Biến mất (Idle + Hop) 
+			- TakeDmg
+			- Death
+	+ Boss: Golem (Màn boss, boss nằm ở giữa, cho bạn chịch, 
+		Thuộc tính:
+		Phương thức:
+			- Init(50 máu)
+			- 
