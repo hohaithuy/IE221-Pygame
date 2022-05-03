@@ -73,7 +73,7 @@ class Cat(agent):
                 self.setY(self.y + 2)
         
         char = self.suface[action][int(self.action)]
-        charRect = char.get_rect(midbottom = (self.x, self.y))
+        charRect = char.get_rect(topleft = (self.x, self.y))
 
         screen.blit(char, charRect)
         
@@ -81,8 +81,6 @@ class Cat(agent):
         if self.action >= len(self.suface[action]):
             self.action = 0
     
-    def jump(self):
-        return 0
             
 
 WIDTH, HEIGHT = 900, 500
