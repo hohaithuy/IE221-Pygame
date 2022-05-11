@@ -17,6 +17,7 @@ speedGame = 0.1
 windowns = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("MeowAdventure")
 
+<<<<<<< HEAD
 def main():
     
     player = pygame.sprite.GroupSingle()
@@ -24,13 +25,13 @@ def main():
     
     enemy = pygame.sprite.Group()
     enemy.add(Frog(windowns, player))
+=======
+>>>>>>> 3ab61e55b7aebc3c530a238835d21b16990b50b2
 
-    # smile = Smile(10, 1)
-    # smile.setLocation(player.getX() + 100, player.getY() + 50)
-    # frog = Frog(10, 1)
-    # frog.setLocation(player.getX() - 200, player.getY() - 10)
-    # bat = Bat(10, 1)
-    # bat.setLocation(player.getX() - 100, player.getY())
+def main():
+
+
+
     
     run = True    
     while run:

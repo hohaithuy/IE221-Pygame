@@ -17,9 +17,7 @@ class Cat(agent):
                         }
         
         self.action = 'idle'
-
         self.gravity = 0
-
         self.index = 0
         self.image = self.suface['idle'][int(self.index)]
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
@@ -63,7 +61,6 @@ class Cat(agent):
                     neg = -1
                 self.y -= self.jumpCount ** 2 * 0.1 * neg
                 self.jumpCount -= 1
-                print(self.y)
             else:
                 self.action = 'idle'
                 self.isJump = False
@@ -77,6 +74,7 @@ class Cat(agent):
                 self.action = 'run'
         else:
             self.vel = 0
+            if self.action == 'run': self.action = 'idle'
         if self.vel > 3: self.vel = 4
     
     def animations_state(self):
@@ -96,6 +94,9 @@ class Cat(agent):
         self.image = self.suface[self.action][int(self.index)]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
+    
+    def take_dmg(self):
+        a = 0
 
     def update(self):
         self.input()
