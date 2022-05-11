@@ -35,10 +35,9 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             
-                
         #drawing 
         windowns.fill((0, 0, 0))
-        pygame.draw.line(windowns, 'blue', (0, 100), (900, 100))
+        pygame.draw.line(windowns, 'blue', (0, 300), (900, 300))
         player.draw(windowns)
         # smile.drawAction(windowns, speedGame, player)
         # frog.drawAction(windowns, speedGame, player)
