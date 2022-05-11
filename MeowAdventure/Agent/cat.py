@@ -95,12 +95,14 @@ class Cat(agent):
         self.image = pygame.transform.flip(self.image, self.flip, False) 
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
     
-    def take_dmg(self):
-        a = 0
+    def takeDmg(self, dmg: int):
+        self.setHP(self.getHP() -  dmg)
+        self.action = 'takeDmg'
 
     def update(self):
         self.input()
         self.animations_state()
         self.jump()
         self.apply_velocity()
+        #print(self.getHP())
 

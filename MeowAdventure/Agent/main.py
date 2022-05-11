@@ -1,7 +1,7 @@
 from bat import Bat
 from cat import Cat 
 from smile import Smile
-from enemy import Frog
+from enemy import Frog, Slime
 from threading import Timer
 import pygame
 import os
@@ -17,22 +17,18 @@ speedGame = 0.1
 windowns = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("MeowAdventure")
 
-<<<<<<< HEAD
-def main():
+
     
+
+
+def main():
     player = pygame.sprite.GroupSingle()
     player.add(Cat())
     
     enemy = pygame.sprite.Group()
     enemy.add(Frog(windowns, player))
-=======
->>>>>>> 3ab61e55b7aebc3c530a238835d21b16990b50b2
+    enemy.add(Slime(windowns, player))
 
-def main():
-
-
-
-    
     run = True    
     while run:
         for event in pygame.event.get():
