@@ -7,7 +7,6 @@ class Cat(agent):
     
     def __init__(self, hp=10, dmg=1, W_Screen = 900, H_Screen = 500):
         agent.__init__(self, hp, dmg, W_Screen, H_Screen)
-
         self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "run/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "run")) ]
                         ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "idle/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "idle")) ]
                         ,'jump' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "jump/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "jump")) ]
@@ -30,6 +29,7 @@ class Cat(agent):
         self.vel = 0
         self.flip = False
         self.attack = False
+        
     def setAction(self):
         #reset hành động mỗi lần bấm phím
         self.action = 0

@@ -1,7 +1,7 @@
 from bat import Bat
 from cat import Cat 
 from smile import Smile
-from frog import Frog
+from enemy import Frog
 from threading import Timer
 import pygame
 import os
@@ -21,6 +21,9 @@ def main():
     
     player = pygame.sprite.GroupSingle()
     player.add(Cat())
+    
+    enemy = pygame.sprite.Group()
+    enemy.add(Frog(windowns, player))
 
     # smile = Smile(10, 1)
     # smile.setLocation(player.getX() + 100, player.getY() + 50)
@@ -39,10 +42,14 @@ def main():
         windowns.fill((0, 0, 0))
         pygame.draw.line(windowns, 'blue', (0, 300), (900, 300))
         player.draw(windowns)
+        enemy.draw(windowns)
+        
         # smile.drawAction(windowns, speedGame, player)
         # frog.drawAction(windowns, speedGame, player)
         # bat.drawAction(windowns, speedGame, player)
-        player.update()        
+        enemy.update()
+        player.update()
+        enemy.update()        
         pygame.display.update()
         timer.tick(FPS)
     
