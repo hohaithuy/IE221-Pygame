@@ -17,17 +17,11 @@ speedGame = 0.1
 windowns = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("MeowAdventure")
 
-def main():
-    
-    player = pygame.sprite.GroupSingle()
-    player.add(Cat())
 
-    # smile = Smile(10, 1)
-    # smile.setLocation(player.getX() + 100, player.getY() + 50)
-    # frog = Frog(10, 1)
-    # frog.setLocation(player.getX() - 200, player.getY() - 10)
-    # bat = Bat(10, 1)
-    # bat.setLocation(player.getX() - 100, player.getY())
+def main():
+
+
+
     
     run = True    
     while run:
