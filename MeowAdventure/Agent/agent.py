@@ -1,4 +1,5 @@
-class agent:
+import pygame
+class agent(pygame.sprite.Sprite):
     def __init__(self, height, width, hp, dmg, W_Screen, H_Screen):
         self.height, self.width = height, width
         self.x = (W_Screen - self.width)/2

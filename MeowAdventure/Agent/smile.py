@@ -28,7 +28,6 @@ class Smile(agent):
                         ,'attack' : [pygame.transform.scale(pygame.image.load(os.path.join("Smile", "hop/", i)), (150, 150)) for i in os.listdir(os.path.join("Smile", "hop")) ]
                         + [pygame.transform.scale(pygame.image.load(os.path.join("Smile", "attack/", i)), (150, 150)) for i in os.listdir(os.path.join("Smile", "attack")) ]
                         + [pygame.transform.scale(pygame.image.load(os.path.join("Smile", "death/", i)), (150, 150)) for i in os.listdir(os.path.join("Smile", "death")) ]
-                        ,'hit' : [pygame.transform.scale(pygame.image.load(os.path.join("Smile", "hit/", i)), (150, 150)) for i in os.listdir(os.path.join("Smile", "hit")) ]
                         }
         self.action_name = action_name
         super().__init__(150, 150, hp, dmg, W_Screen, H_Screen)

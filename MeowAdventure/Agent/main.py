@@ -19,14 +19,15 @@ pygame.display.set_caption("MeowAdventure")
 
 def main():
     
-    
-    cat = Cat(10, 1)
-    smile = Smile(10, 1)
-    smile.setLocation(cat.getX() + 100, cat.getY() + 50)
-    frog = Frog(10, 1)
-    frog.setLocation(cat.getX() - 200, cat.getY() - 10)
-    bat = Bat(10, 1)
-    bat.setLocation(cat.getX() - 100, cat.getY())
+    player = pygame.sprite.GroupSingle()
+    player.add(Cat())
+
+    # smile = Smile(10, 1)
+    # smile.setLocation(player.getX() + 100, player.getY() + 50)
+    # frog = Frog(10, 1)
+    # frog.setLocation(player.getX() - 200, player.getY() - 10)
+    # bat = Bat(10, 1)
+    # bat.setLocation(player.getX() - 100, player.getY())
     
     run = True
     action = 'idle' #Hành động của nhân vật
@@ -50,20 +51,19 @@ def main():
                     action = 'attack1'
                 elif keys[pygame.K_SPACE]:
                     action = 'attack2'
-                cat.setAction()# reset lại thứ tự hành động mỗi khi thực hiện hoạt ảnh mới
+                player.setAction()# reset lại thứ tự hành động mỗi khi thực hiện hoạt ảnh mới
             elif event.type == pygame.KEYUP: 
                 action = 'idle'
-                cat.setAction() 
+                # player.setAction() 
                 
         #drawing 
         windowns.fill((0, 0, 0))
-        pygame.draw.line(windowns, 'blue', (0, 320), (900, 320))
-        
-        smile.drawAction(windowns, speedGame, cat)
-        frog.drawAction(windowns, speedGame, cat)
-        bat.drawAction(windowns, speedGame, cat)
-        cat.drawAction(windowns, action, speedGame)
-        
+        pygame.draw.line(windowns, 'blue', (0, 100), (900, 100))
+        player.draw(windowns)
+        # smile.drawAction(windowns, speedGame, player)
+        # frog.drawAction(windowns, speedGame, player)
+        # bat.drawAction(windowns, speedGame, player)
+        player.update()        
         pygame.display.update()
         timer.tick(FPS)
     
