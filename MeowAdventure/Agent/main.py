@@ -18,16 +18,15 @@ windowns = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("MeowAdventure")
 
 
-    
-
-
 def main():
+
     player = pygame.sprite.GroupSingle()
     player.add(Cat())
     
     enemy = pygame.sprite.Group()
     enemy.add(Frog(windowns, player))
     enemy.add(Slime(windowns, player))
+
 
     run = True    
     while run:
