@@ -104,5 +104,5 @@ class Cat(agent):
         self.animations_state()
         self.jump()
         self.apply_velocity()
-        #print(self.getHP())
+        print(self.getHP())
 

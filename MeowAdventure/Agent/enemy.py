@@ -176,10 +176,10 @@ class Slime(Enemy):
         """
         super().__init__(player, 100, 301, hp, dmg, W_Screen, H_Screen)
         self.screen = screen
-        self.suface = {'idle' : [pygame.transform.scale(pygame.image.load(os.path.join("Slime", "idle/", i)), (150, 150)) for i in os.listdir(os.path.join("Slime", "idle")) ]
-                        ,'attack' : [pygame.transform.scale(pygame.image.load(os.path.join("Slime", "hop/", i)), (150, 150)) for i in os.listdir(os.path.join("Slime", "hop")) ]
-                        + [pygame.transform.scale(pygame.image.load(os.path.join("Slime", "attack/", i)), (150, 150)) for i in os.listdir(os.path.join("Slime", "attack")) ]
-                        + [pygame.transform.scale(pygame.image.load(os.path.join("Slime", "death/", i)), (150, 150)) for i in os.listdir(os.path.join("Slime", "death")) ]
+        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "idle/", i))) for i in os.listdir(os.path.join("Slime", "idle")) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hop/", i))) for i in os.listdir(os.path.join("Slime", "hop")) ]
+                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "attack/", i))) for i in os.listdir(os.path.join("Slime", "attack")) ]
+                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "death/", i))) for i in os.listdir(os.path.join("Slime", "death")) ]
                         }
         self.action = action_name
         
