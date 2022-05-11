@@ -3,11 +3,10 @@ import os
 from agent import agent
 	
       
-class Cat(agent, pygame.sprite.Sprite):
+class Cat(agent):
     
     def __init__(self, hp=10, dmg=1, W_Screen = 900, H_Screen = 500):
-        pygame.sprite.Sprite.__init__(self)
-        super().__init__(200, 320, hp, dmg, W_Screen, H_Screen)
+        agent.__init__(self, hp, dmg, W_Screen, H_Screen)
 
         self.suface = {'right' : [pygame.transform.scale(pygame.image.load(os.path.join("MeowKnight", "run/", i)).convert_alpha(), (100,100)) for i in os.listdir(os.path.join("MeowKnight", "run")) ]
                         ,'idle' : [pygame.transform.scale(pygame.image.load(os.path.join("MeowKnight", "idle/", i)).convert_alpha(), (100,100)) for i in os.listdir(os.path.join("MeowKnight", "idle")) ]

@@ -1,9 +1,11 @@
 import pygame
 class agent(pygame.sprite.Sprite):
-    def __init__(self, height, width, hp, dmg, W_Screen, H_Screen):
-        self.height, self.width = height, width
-        self.x = (W_Screen - self.width)/2
-        self.y = (H_Screen- self.height)/2
+    def __init__(self, hp, dmg, W_Screen, H_Screen):
+        
+        super().__init__()
+
+        self.x = 300
+        self.y = 300
         self.hp = hp
         self.dmg = dmg
         self.isExist = True

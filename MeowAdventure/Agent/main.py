@@ -29,32 +29,12 @@ def main():
     # bat = Bat(10, 1)
     # bat.setLocation(player.getX() - 100, player.getY())
     
-    run = True
-    action = 'idle' #Hành động của nhân vật
-    
+    run = True    
     while run:
-        #print(cat.getX(), cat.getY(), cat.getW(), cat.getH(), smile.getX(), smile.getY(), smile.getW(), smile.getH())
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             
-            if event.type == pygame.KEYDOWN: 
-                keys = pygame.key.get_pressed()
-
-                if keys[pygame.K_LEFT]:
-                    action = 'left'
-                elif keys[pygame.K_RIGHT]:
-                    action = 'right'
-                elif keys[pygame.K_UP]:
-                    action = 'jump'
-                elif keys[pygame.K_DOWN]:
-                    action = 'attack1'
-                elif keys[pygame.K_SPACE]:
-                    action = 'attack2'
-                player.setAction()# reset lại thứ tự hành động mỗi khi thực hiện hoạt ảnh mới
-            elif event.type == pygame.KEYUP: 
-                action = 'idle'
-                # player.setAction() 
                 
         #drawing 
         windowns.fill((0, 0, 0))
