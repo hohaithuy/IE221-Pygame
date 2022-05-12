@@ -5,7 +5,7 @@ from agent import agent
       
 class Cat(agent):
     
-    def __init__(self, screen, enemy, hp=10, dmg=1, W_Screen = 900, H_Screen = 500):
+    def __init__(self, screen, enemy, hp=3, dmg=1, W_Screen = 900, H_Screen = 500):
         agent.__init__(self, hp, dmg, W_Screen, H_Screen)
         self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "run/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "run")) ]
                         ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "idle/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "idle")) ]
@@ -30,7 +30,8 @@ class Cat(agent):
         self.attack = False
         self.isVulnerable = True
         self.isAttack = False
-
+        self.alive = True
+        self.end = False
     def resetAction(self):
         self.index = 0
     
@@ -53,10 +54,12 @@ class Cat(agent):
                 x = 13
             self.setX(x)
             self.flip = True
+
         elif keys[pygame.K_a] and not self.isAttack:
             self.action = 'attack1'
             self.isAttack = True
             self.index = 0
+
         elif keys[pygame.K_s] and not self.isAttack:
             self.action = 'attack2'
             self.isAttack = True
@@ -93,14 +96,17 @@ class Cat(agent):
         self.index += self.framerate
 
         if self.index >= len(self.suface[self.action]):
-            if self.isAttack:
-                
-                self.action = 'idle'
-                self.attack = False
-            if self.action == 'takeDmg':
-                self.action = 'idle'  
             self.index = 0
             self.framerate = 0.2
+            if self.isAttack:
+                self.action = 'idle'
+                self.isAttack = False
+            if self.action == 'takeDmg':
+                self.action = 'idle'
+            
+            if not self.alive:
+                self.index = -1
+                self.end = True
         
         self.image = self.suface[self.action][int(self.index)]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
@@ -114,7 +120,15 @@ class Cat(agent):
             self.framerate = 0.1
             self.index = 0
             print("Take Dmg")
+
+    def checkHP(self):
+        if self.hp <= 0:
+            self.alive = False
+            self.action = 'death'
+            self.framerate = 0.05
+            self.index = 0
     
+
     def setVulnarable(self):
         self.isVulnerable = True
 
@@ -124,11 +138,15 @@ class Cat(agent):
         for sprite in hits:
             if self.isAttack:
                 sprite.takeDmg(self.dmg)    
+
     
     def update(self):
-        self.input()
-        self.animations_state()
-        self.jump()
-        self.apply_velocity()
-        print("HP", self.getHP(), self.action)
+        if self.alive:
+            self.input()
+            self.jump()
+            self.apply_velocity()
+            self.checkHP()
+            print("HP", self.getHP(), self.action)
+        if not self.end:
+            self.animations_state()
 
