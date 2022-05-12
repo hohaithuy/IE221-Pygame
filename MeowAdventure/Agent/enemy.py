@@ -161,7 +161,7 @@ class Frog(Enemy):
             self.attack = True
             self.resetAction()
         
-        if int(self.index) == 7 and self.attack:
+        if int(self.index) == 6 and self.attack:
             sprite.takeDmg(self.dmg)
             self.attack = False
         
@@ -191,7 +191,7 @@ class Slime(Enemy):
         Args:
             attack = hop + attack + death.
         """
-        super().__init__(player, 100, 301, hp, dmg, W_Screen, H_Screen)
+        super().__init__(player, 200, 301, hp, dmg, W_Screen, H_Screen)
         self.screen = screen
         self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "idle/", i))) for i in os.listdir(os.path.join("Slime", "idle")) ]
                         ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hop/", i))) for i in os.listdir(os.path.join("Slime", "hop")) ]
@@ -213,26 +213,18 @@ class Slime(Enemy):
         return True
         
     def animations_state(self):
-        #if self.isAttack:
-            #self.framerate = 2 / (20 - len(self.suface[self.action]))
-            #print(self.framerate)
-            #self.framerate = 0.15
-
-
         self.index += self.framerate
-        
-            
+                  
         if self.index >= len(self.suface[self.action]) -1:
             if self.isAttack:
                 self.framerate = 0.1
-                
                 self.getDmg = True
                 self.action = 'idle'
                 self.isAttack = False
                 
 
             elif self.action == 'death':
-                print('HI')
+                #print('HI')
                 self.kill()
             
             self.resetAction()
@@ -247,28 +239,33 @@ class Slime(Enemy):
         
     def attackDmg(self, sprite):
         if self.delay == 0:
-            self.framerate = 0.15
+            self.framerate = 0.2
             self.action = 'attack'
             self.isAttack = True 
             self.delay = 2
             self.attack = True
             self.resetAction()
-        
-        if int(self.index) == len(self.suface[self.action]) - 4 and self.attack and self.checkCollide():
+           
+        if int(self.index) == len(self.suface[self.action]) - 5 and self.attack and self.checkCollide():
             sprite.takeDmg(self.dmg)
+            sprite.setVulnarable()
             self.attack = False
         
         
     def attackAction(self):
         sprite = self.player.sprites()[0]
-        if self.isAttack != False:
-            if self.rect.x - 59 == sprite.rect.right or self.rect.x + 59 == sprite.rect.left:
-                self.attackDmg(sprite)
+        #print(self.rect, sprite.rect)
+        #print(self.action, int(self.index), len(self.suface[self.action]) - 5, self.attack, self.checkCollide())
+        
+        if abs(self.rect.x - sprite.rect.right) <= 59 or abs(self.rect.x - sprite.rect.left) <= 59:
+            #print("dame")
+            self.attackDmg(sprite)
+            
             
         
     def checkCollide(self):
         hits = pygame.sprite.spritecollide(self, self.player , False)#get list spire in groups
-       
+
         if hits != []:   
             #self.attackDmg(hits[0])
             return True
@@ -276,6 +273,7 @@ class Slime(Enemy):
     
     def takeDmg(self, dmg):
         self.setHP(self.getHP() - dmg)
+        
         if self.islive():
             self.action = 'hit'
             if self.istakeDmg == False:
@@ -288,7 +286,7 @@ class Slime(Enemy):
 
     def update(self):
         self.animations_state()
-        self.checkCollide()
+        #print(self.checkCollide())
         self.attackAction()
         
         
