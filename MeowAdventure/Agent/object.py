@@ -8,3 +8,5 @@ class Object(pygame.sprite.Sprite):
             self.image = pygame.image.load(path).convert_alpha()
             self.rect = self.image.get_rect(center = (self.x, self.y))
         
+        def get_surface(self):
+            return self.rect.midtop

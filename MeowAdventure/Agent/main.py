@@ -18,7 +18,7 @@ speedGame = 0.1
 windowns = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("MeowAdventure")
 
-background = pygame.transform.scale(pygame.image.load(os.path.join("BG", "background-final3.png")), (WIDTH, HEIGHT))
+# background = pygame.transform.scale(pygame.image.load(os.path.join("BG", "background-final3.png")), (WIDTH, HEIGHT))
 
 
 
@@ -42,7 +42,7 @@ def main():
             
         #drawing 
         windowns.fill((0, 0, 0))
-        windowns.blit(background, (0, 0))
+        # windowns.blit(background, (0, 0))
         pygame.draw.line(windowns, 'blue', (0, 300), (900, 300))
         
         enemy.draw(windowns)
