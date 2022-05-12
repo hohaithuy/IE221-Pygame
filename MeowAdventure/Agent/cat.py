@@ -96,6 +96,15 @@ class Cat(agent):
         self.index += self.framerate
 
         if self.index >= len(self.suface[self.action]):
+<<<<<<< HEAD
+            if self.isAttack:
+                
+                self.action = 'idle'
+                self.isAttack = False
+            if self.action == 'takeDmg':
+                self.action = 'idle'  
+=======
+>>>>>>> 0822e38823be7a9349da41d09eb00bc035f75981
             self.index = 0
             self.framerate = 0.2
             if self.isAttack:
@@ -141,6 +150,13 @@ class Cat(agent):
 
     
     def update(self):
+<<<<<<< HEAD
+        self.input()
+        self.animations_state()
+        self.jump()
+        self.apply_velocity()
+        #print("HP", self.getHP(), self.action)
+=======
         if self.alive:
             self.input()
             self.jump()
@@ -149,4 +165,5 @@ class Cat(agent):
             print("HP", self.getHP(), self.action)
         if not self.end:
             self.animations_state()
+>>>>>>> 0822e38823be7a9349da41d09eb00bc035f75981
 
