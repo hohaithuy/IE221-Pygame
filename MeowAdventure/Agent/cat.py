@@ -22,7 +22,7 @@ class Cat(agent):
         self.image = self.suface['idle'][int(self.index)]
         
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
-        self.framerate = 0.1
+        self.framerate = 0.2
         self.isJump = False
         self.jumpCount = 15  
         self.vel = 0
@@ -102,7 +102,7 @@ class Cat(agent):
             if self.action == 'takeDmg':
                 self.action = 'idle'  
             self.index = 0
-            self.framerate = 0.1
+            self.framerate = 0.2
         
         self.image = self.suface[self.action][int(self.index)]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
@@ -113,7 +113,8 @@ class Cat(agent):
             self.isVulnerable = False
             self.setHP(self.getHP() -  dmg)
             self.action = 'takeDmg'
-            self.framerate = 0.05
+            self.framerate = 0.1
+            self.index = 0
             print("Take Dmg")
     
     def setVulnarable(self):
