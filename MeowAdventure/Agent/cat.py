@@ -31,8 +31,7 @@ class Cat(agent):
         self.isVulnerable = True
         self.isAttack = False
 
-    def setAction(self):
-        #reset hành động mỗi lần bấm phím
+    def resetAction(self):
         self.index = 0
     
     def input(self):

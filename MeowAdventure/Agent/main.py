@@ -6,6 +6,7 @@ from threading import Timer
 import pygame
 import os
 import time
+from object import Object
 
 
 WIDTH, HEIGHT = 900, 500
@@ -17,7 +18,7 @@ speedGame = 0.1
 windowns = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("MeowAdventure")
 
-background = pygame.image.load(os.path.join("BG", "background-final1.png"))
+background = pygame.transform.scale(pygame.image.load(os.path.join("BG", "background-final3.png")), (WIDTH, HEIGHT))
 
 
 
@@ -30,6 +31,8 @@ def main():
     enemy.add(Slime(windowns, player))
     
     player.add(Cat(windowns, enemy))
+
+    objects = pygame.sprite.Group()
 
     run = True    
     while run:
@@ -44,7 +47,7 @@ def main():
         
         enemy.draw(windowns)
         player.draw(windowns)
-        
+        objects.draw(windowns)
         # smile.drawAction(windowns, speedGame, player)
         # frog.drawAction(windowns, speedGame, player)
         # bat.drawAction(windowns, speedGame, player)
