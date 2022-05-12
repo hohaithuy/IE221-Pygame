@@ -27,7 +27,8 @@ class Cat(agent):
         self.vel = 0
         self.flip = False
         self.attack = False
-        
+        self.isVulnerable = True
+
     def setAction(self):
         #reset hành động mỗi lần bấm phím
         self.action = 0
@@ -80,29 +81,36 @@ class Cat(agent):
     def animations_state(self):
         if self.attack:
             self.framerate = 2 / (20 - len(self.suface[self.action]))
-            print(self.framerate)
-
 
         self.index += self.framerate
+
         if self.index >= len(self.suface[self.action]):
             if self.attack:
                 self.framerate = 0.2
                 self.action = 'idle'
                 self.attack = False
+            if self.action == 'takeDmg':
+                self.action = 'idle'  
             self.index = 0
-
+        
         self.image = self.suface[self.action][int(self.index)]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
     
     def takeDmg(self, dmg: int):
-        self.setHP(self.getHP() -  dmg)
-        self.action = 'takeDmg'
+        if self.isVulnerable is True:
+            self.isVulnerable = False
+            self.setHP(self.getHP() -  dmg)
+            self.action = 'takeDmg'
+            print("Take DMg")
+    
+
 
     def update(self):
         self.input()
         self.animations_state()
         self.jump()
         self.apply_velocity()
+        self.delayTakeDmg()
         print(self.getHP())
 
