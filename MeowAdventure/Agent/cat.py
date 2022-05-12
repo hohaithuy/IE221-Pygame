@@ -22,13 +22,14 @@ class Cat(agent):
         self.image = self.suface['idle'][int(self.index)]
         
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
-        self.framerate = 0.2
+        self.framerate = 0.1
         self.isJump = False
         self.jumpCount = 15  
         self.vel = 0
         self.flip = False
         self.attack = False
         self.isVulnerable = True
+        self.isAttack = False
 
     def setAction(self):
         #reset hành động mỗi lần bấm phím
@@ -90,17 +91,18 @@ class Cat(agent):
     def animations_state(self):
         if self.isAttack:
             self.framerate = 2 / (20 - len(self.suface[self.action]))
-
+            
         self.index += self.framerate
 
         if self.index >= len(self.suface[self.action]):
             if self.isAttack:
-                self.framerate = 0.2
+                
                 self.action = 'idle'
                 self.attack = False
             if self.action == 'takeDmg':
                 self.action = 'idle'  
             self.index = 0
+            self.framerate = 0.1
         
         self.image = self.suface[self.action][int(self.index)]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
@@ -111,9 +113,11 @@ class Cat(agent):
             self.isVulnerable = False
             self.setHP(self.getHP() -  dmg)
             self.action = 'takeDmg'
-            print("Take DMg")
+            self.framerate = 0.05
+            print("Take Dmg")
     
-
+    def setVulnarable(self):
+        self.isVulnerable = True
 
     def checkCollide(self):
         hits = pygame.sprite.spritecollide(self, self.enemy , False)#get list spire in groups
@@ -127,5 +131,5 @@ class Cat(agent):
         self.animations_state()
         self.jump()
         self.apply_velocity()
-        print(self.getHP())
+        print("HP", self.getHP(), self.action)
 

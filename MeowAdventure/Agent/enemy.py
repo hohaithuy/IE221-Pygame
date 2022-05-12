@@ -96,7 +96,7 @@ class Frog(Enemy):
         if self.checkCollide() == False:
             self.move()
         self.islive()
-        #print(self.flip)
+        print(self.action, "index", int(self.index))
         
         
     def move(self):
@@ -130,10 +130,14 @@ class Frog(Enemy):
                 self.isAttack = False
                 self.attack = True
                 
+                
+                self.player.sprites()[0].setVulnarable()
+                
             elif self.action == 'idle':
                 self.action = 'run'
             elif self.action == 'death':
                 self.kill()
+                
             self.index = 0
             
             if self.delay != 0:
