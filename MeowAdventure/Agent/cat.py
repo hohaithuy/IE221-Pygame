@@ -52,7 +52,6 @@ class Cat(agent):
             if x - 13 <= 0:
                 x = 13
             self.setX(x)
-            
             self.flip = True
         elif keys[pygame.K_a] and not self.isAttack:
             self.action = 'attack1'
