@@ -96,7 +96,7 @@ class Cat(agent):
             if self.isAttack:
                 
                 self.action = 'idle'
-                self.attack = False
+                self.isAttack = False
             if self.action == 'takeDmg':
                 self.action = 'idle'  
             self.index = 0
@@ -130,5 +130,5 @@ class Cat(agent):
         self.animations_state()
         self.jump()
         self.apply_velocity()
-        print("HP", self.getHP(), self.action)
+        #print("HP", self.getHP(), self.action)
 
