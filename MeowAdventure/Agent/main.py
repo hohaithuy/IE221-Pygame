@@ -19,15 +19,17 @@ pygame.display.set_caption("MeowAdventure")
 
 background = pygame.image.load(os.path.join("BG", "background-final1.png"))
 
+
+
 def main():
 
     player = pygame.sprite.GroupSingle()
-    player.add(Cat())
     
     enemy = pygame.sprite.Group()
     enemy.add(Frog(windowns, player))
     enemy.add(Slime(windowns, player))
-
+    
+    player.add(Cat(windowns, enemy))
 
     run = True    
     while run:
@@ -39,17 +41,18 @@ def main():
         windowns.fill((0, 0, 0))
         windowns.blit(background, (0, 0))
         pygame.draw.line(windowns, 'blue', (0, 300), (900, 300))
-        player.draw(windowns)
+        
         enemy.draw(windowns)
+        player.draw(windowns)
         
         # smile.drawAction(windowns, speedGame, player)
         # frog.drawAction(windowns, speedGame, player)
         # bat.drawAction(windowns, speedGame, player)
         enemy.update()
-        player.update()
-        enemy.update()        
+        player.update()     
         pygame.display.update()
         timer.tick(FPS)
+    
     
     pygame.quit()
 

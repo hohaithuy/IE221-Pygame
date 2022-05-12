@@ -4,6 +4,8 @@ class agent(pygame.sprite.Sprite):
         
         super().__init__()
 
+        self.W_screen = W_Screen
+        self.H_screen = H_Screen
         self.x = 300
         self.y = 300
         self.hp = hp
