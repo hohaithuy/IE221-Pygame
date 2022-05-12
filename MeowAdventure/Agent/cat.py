@@ -27,12 +27,10 @@ class Cat(agent):
         self.jumpCount = 15  
         self.vel = 0
         self.flip = False
-        self.isAttack = False
-        self.enemy = enemy
-        self.screen = screen
-        self.delay = 0
-        
-    def resetAction(self):
+        self.attack = False
+        self.isVulnerable = True
+
+    def setAction(self):
         #reset hành động mỗi lần bấm phím
         self.index = 0
     
@@ -92,30 +90,30 @@ class Cat(agent):
     def animations_state(self):
         if self.isAttack:
             self.framerate = 2 / (20 - len(self.suface[self.action]))
-            #print(self.framerate)
-
 
         self.index += self.framerate
+
         if self.index >= len(self.suface[self.action]):
             if self.isAttack:
                 self.framerate = 0.2
                 self.action = 'idle'
-                self.isAttack = False
+                self.attack = False
             if self.action == 'takeDmg':
-                self.action = 'idle'
+                self.action = 'idle'  
             self.index = 0
-            
-            if self.delay != 0:
-                self.delay -= 1
-
+        
         self.image = self.suface[self.action][int(self.index)]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
     
     def takeDmg(self, dmg: int):
-        self.setHP(self.getHP() -  dmg)
-        self.action = 'takeDmg'
-        self.resetAction()
+        if self.isVulnerable is True:
+            self.isVulnerable = False
+            self.setHP(self.getHP() -  dmg)
+            self.action = 'takeDmg'
+            print("Take DMg")
+    
+
 
     def checkCollide(self):
         hits = pygame.sprite.spritecollide(self, self.enemy , False)#get list spire in groups
@@ -129,8 +127,5 @@ class Cat(agent):
         self.animations_state()
         self.jump()
         self.apply_velocity()
-        self.checkCollide()
-        print(self.action, self.getHP())
-        #pygame.draw.rect(self.screen, 'blue', self.rect)
-        #pygame.draw.circle(self.screen, 'red', (self.x, self.y), 3)
+        print(self.getHP())
 
