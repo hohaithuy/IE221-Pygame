@@ -27,7 +27,7 @@ def main():
     player = pygame.sprite.GroupSingle()
     
     enemy = pygame.sprite.Group()
-    enemy.add(Frog(windowns, player))
+    #enemy.add(Frog(windowns, player))
     enemy.add(Slime(windowns, player))
     
     player.add(Cat(windowns, enemy))

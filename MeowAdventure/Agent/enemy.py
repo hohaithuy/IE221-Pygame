@@ -246,21 +246,24 @@ class Slime(Enemy):
             self.attack = True
             self.resetAction()
            
-        if int(self.index) == len(self.suface[self.action]) - 5 and self.attack and self.checkCollide():
-            sprite.takeDmg(self.dmg)
+        if int(self.index) == len(self.suface[self.action]) - 4 and self.attack and self.checkCollide():
             sprite.setVulnarable()
+            sprite.takeDmg(self.dmg)
+            
             self.attack = False
         
         
     def attackAction(self):
         sprite = self.player.sprites()[0]
         #print(self.rect, sprite.rect)
-        #print(self.action, int(self.index), len(self.suface[self.action]) - 5, self.attack, self.checkCollide())
+        #print(self.action, int(self.index), len(self.suface[self.action]) - 4, self.attack, self.checkCollide())
+        #print(self.action, int(self.index), len(self.suface[self.action]) - 4, self.attack, self.checkCollide())
         
-        if abs(self.rect.x - sprite.rect.right) <= 59 or abs(self.rect.x - sprite.rect.left) <= 59:
+        if abs(self.x - sprite.rect.right) <= 59 or abs(self.x - sprite.rect.left) <= 59:
             #print("dame")
             self.attackDmg(sprite)
-            
+            print(self.action, int(self.index), len(self.suface[self.action]) - 4, self.attack, self.checkCollide())
+        
             
         
     def checkCollide(self):
