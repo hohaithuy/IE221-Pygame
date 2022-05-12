@@ -1,0 +1,16 @@
+
+
+
++ Game menu: in + out
++ Frog:
+	- Chết
+	- Đánh
++ Bat
++ Boss
++ Background
++ Sound effect
++ Cấu trúc lại file
++ Thêm constrant
+
++ Viết báo cáo
++ Làm slide
