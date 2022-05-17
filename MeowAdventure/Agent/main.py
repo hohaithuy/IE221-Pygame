@@ -1,7 +1,5 @@
-from bat import Bat
 from cat import Cat 
-from smile import Smile
-from enemy import Frog, Slime
+from enemy import Frog, Slime, Bat
 from threading import Timer
 import pygame
 import os
@@ -27,8 +25,9 @@ def main():
     player = pygame.sprite.GroupSingle()
     
     enemy = pygame.sprite.Group()
-    #enemy.add(Frog(windowns, player))
+    enemy.add(Frog(windowns, player))
     enemy.add(Slime(windowns, player))
+    #enemy.add(Bat(windowns, player))
     
     player.add(Cat(windowns, enemy))
 
@@ -48,9 +47,6 @@ def main():
         enemy.draw(windowns)
         player.draw(windowns)
         objects.draw(windowns)
-        # smile.drawAction(windowns, speedGame, player)
-        # frog.drawAction(windowns, speedGame, player)
-        # bat.drawAction(windowns, speedGame, player)
         enemy.update()
         player.update()     
         pygame.display.update()
