@@ -5,8 +5,9 @@ from agent import agent
       
 class Cat(agent):
     
-    def __init__(self, screen, enemy, hp=10, dmg=1, W_Screen = 900, H_Screen = 500):
-        agent.__init__(self, hp, dmg, W_Screen, H_Screen)
+    def __init__(self, screen, enemy, x = 100, y = 313, hp=10
+                 , dmg=1, W_Screen = 900, H_Screen = 500):
+        agent.__init__(self, x, y, hp, dmg, W_Screen, H_Screen)
         self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "run/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "run")) ]
                         ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "idle/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "idle")) ]
                         ,'jump' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "jump/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "jump")) ]
@@ -33,9 +34,15 @@ class Cat(agent):
         self.alive = True
         self.end = False
         self.enemy = enemy
+        self.isPause = False
+        
+        self.music = pygame.mixer.Sound("Sound/sword-hit.wav")
         
     def resetAction(self):
         self.index = 0
+    
+    def Pause(self):
+        self.isPause = True
     
     def input(self):
         keys = pygame.key.get_pressed()
@@ -68,6 +75,7 @@ class Cat(agent):
             self.isAttack = True
             self.attack = True
             self.resetAction()
+            pygame.mixer.Sound.play(self.music)
 
     def jump(self):
         if self.isJump:
@@ -131,6 +139,7 @@ class Cat(agent):
             self.action = 'death'
             self.framerate = 0.05
             self.index = 0
+            pygame.mixer.Sound.play(self.music)
     
 
     def setVulnarable(self):
@@ -140,10 +149,12 @@ class Cat(agent):
         if self.action == "attack1" and self.attack and int(self.index) == 4:           
             sprite.takeDmg(self.dmg)
             self.attack = False
+            
         elif self.action == "attack2" and self.attack and int(self.index) == 1:
             sprite.takeDmg(self.dmg)
             self.attack = False
-    
+            
+            
     def checkCollide(self):
         hits = pygame.sprite.spritecollide(self, self.enemy , False)#get list spire in groups
 
@@ -155,13 +166,14 @@ class Cat(agent):
        
     
     def update(self):
-        if self.alive:
-            self.input()
-            self.jump()
-            self.apply_velocity()
-            self.checkHP()
-            self.checkCollide()
-            print("HP", self.getHP(), int(self.index), self.action)
-        if not self.end:
-            self.animations_state()
+        if self.isPause == False:
+            if self.alive:
+                self.input()
+                self.jump()
+                self.apply_velocity()
+                self.checkHP()
+                self.checkCollide()
+                #print("HP", self.getHP(), int(self.index), self.action)
+            if not self.end:
+                self.animations_state()
 

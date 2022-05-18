@@ -1,54 +1,52 @@
 from cat import Cat 
 from enemy import Frog, Slime, Bat
-from threading import Timer
 import pygame
-import os
-import time
 from object import Object
+import pygame
+from states import States
+import os
+
+from pygame import mixer
 
 
 WIDTH, HEIGHT = 900, 500
 pygame.init()
+mixer.init()
 FPS = 60
 timer = pygame.time.Clock()
 speedGame = 0.1
+state = 1
       
 windowns = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("MeowAdventure")
 
-# background = pygame.transform.scale(pygame.image.load(os.path.join("BG", "background-final3.png")), (WIDTH, HEIGHT))
-
-
-
 def main():
 
     player = pygame.sprite.GroupSingle()
-    
     enemy = pygame.sprite.Group()
-    enemy.add(Frog(windowns, player))
-    enemy.add(Slime(windowns, player))
+    portal = pygame.sprite.Group()
+    
+    state = States(windowns, player, enemy, portal)
+    
+    #enemy.add(Frog(windowns, player))
+    #enemy.add(Slime(windowns, player))
     #enemy.add(Bat(windowns, player))
     
     player.add(Cat(windowns, enemy))
-
-    objects = pygame.sprite.Group()
-
+    state.createState()
+    
     run = True    
     while run:
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             
         #drawing 
-        windowns.fill((0, 0, 0))
-        # windowns.blit(background, (0, 0))
-        pygame.draw.line(windowns, 'blue', (0, 300), (900, 300))
         
-        enemy.draw(windowns)
-        player.draw(windowns)
-        objects.draw(windowns)
-        enemy.update()
-        player.update()     
+        #pygame.draw.line(windowns, 'blue', (0, 313), (900, 313))
+        state.update()
+             
         pygame.display.update()
         timer.tick(FPS)
     
@@ -57,3 +55,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

@@ -1,13 +1,13 @@
 import pygame
 class agent(pygame.sprite.Sprite):
-    def __init__(self, hp, dmg, W_Screen, H_Screen):
+    def __init__(self, x, y, hp, dmg, W_Screen, H_Screen):
         
         super().__init__()
 
         self.W_screen = W_Screen
         self.H_screen = H_Screen
-        self.x = 300
-        self.y = 300
+        self.x = x
+        self.y = y
         self.hp = hp
         self.dmg = dmg
         self.isExist = True
@@ -43,3 +43,7 @@ class agent(pygame.sprite.Sprite):
         
     def setRotate(self, rotate):
         self.isRotate = rotate
+    
+    def setLocation(self, x, y):
+        self.x = x
+        self.y = y

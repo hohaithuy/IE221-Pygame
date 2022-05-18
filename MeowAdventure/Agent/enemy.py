@@ -67,13 +67,13 @@ class Enemy(pygame.sprite.Sprite):
         
 class Frog(Enemy):
     
-    def __init__(self, screen, player,  hp = 5, dmg= 1, W_Screen = 900, H_Screen = 500, action_name = "idle"):  
+    def __init__(self, screen, player, x, y,  hp = 5, dmg= 1, W_Screen = 900, H_Screen = 500, action_name = "idle"):  
         """_summary_
 
         Args:
             attack = hop + attack + death.
         """
-        super().__init__(player, 200, 301, hp, dmg, W_Screen, H_Screen)
+        super().__init__(player, x, y, hp, dmg, W_Screen, H_Screen)
         self.screen = screen
         self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "run/", i)).convert_alpha()) for i in os.listdir(os.path.join("Frog", "run")) ]
                         ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "idle/", i)).convert_alpha()) for i in os.listdir(os.path.join("Frog", "idle")) ]
@@ -86,16 +86,7 @@ class Frog(Enemy):
         self.image = self.suface['idle'][int(self.index)]
         self.rect =  self.image.get_rect(midbottom = (self.x, self.y))
         #self.flip_cat = False
-        
-    def update(self):
-        self.attackAction()
-        self.animations_state()
-        self.move()
-        #print("HP", self.getHP(), self.action, int(self.index),len(self.suface[self.action]) -1)
-
-        #print(self.action, "index", int(self.index))
-        
-        
+                
     def move(self):
         if self.rect.right >= self.W_Screen:
             self.velocity = -2
@@ -112,6 +103,7 @@ class Frog(Enemy):
             
     def animations_state(self):
         self.index += self.framerate
+        
            
         if int(self.index) >= len(self.suface[self.action]):
             if self.isAttack:
@@ -126,6 +118,8 @@ class Frog(Enemy):
             elif self.action == 'death':
                 self.kill()
                 
+            else: self.action = 'idle'
+                
             self.index = 0
             
             if self.delay != 0:
@@ -138,6 +132,13 @@ class Frog(Enemy):
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))  
         #pygame.draw.rect(self.screen, 'blue', self.rect) 
         
+    def update(self):
+        self.attackAction()
+        self.animations_state()
+        self.move()
+        print("HP", self.getHP(), self.action, int(self.index),len(self.suface[self.action]) -1)
+
+        #print(self.action, "index", int(self.index))    
         
         
     def attackDmg(self, sprite):
@@ -187,13 +188,13 @@ class Frog(Enemy):
 ########################
 class Slime(Enemy):
     
-    def __init__(self, screen, player,  hp = 3, dmg= 1, W_Screen = 900, H_Screen = 500, action_name = "idle"):  
+    def __init__(self, screen, player, x, y, hp = 3, dmg= 1, W_Screen = 900, H_Screen = 500, action_name = "idle"):  
         """_summary_
 
         Args:
             attack = hop + attack + death.
         """
-        super().__init__(player, 200, 301, hp, dmg, W_Screen, H_Screen)
+        super().__init__(player, x, y, hp, dmg, W_Screen, H_Screen)
         self.screen = screen
         self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "idle/", i))) for i in os.listdir(os.path.join("Slime", "idle")) ]
                         ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hop/", i))) for i in os.listdir(os.path.join("Slime", "hop")) ]
@@ -207,14 +208,20 @@ class Slime(Enemy):
         
         self.image = self.suface['idle'][int(self.index)]
         self.rect =  self.image.get_rect(midbottom = (self.x, self.y))
+        self.music = pygame.mixer.Sound('Sound/slimejump.wav')
         
     def animations_state(self):
         self.index += self.framerate
-                  
+        
+        
+        if round(self.index, 2) == 13.0 and self.isAttack:
+            pygame.mixer.Sound.play(self.music)
+            
         if int(self.index) >= len(self.suface[self.action]):
             
             if self.action == 'death':
                 self.kill()
+                
             elif self.isAttack:
                 self.framerate = 0.1
                 self.isAttack = False
@@ -238,16 +245,17 @@ class Slime(Enemy):
             self.delay = 3
             self.attack = True
             self.resetAction()
-           
+        
         if int(self.index) == len(self.suface[self.action]) - 4 and self.attack and self.checkCollide():
             sprite.setVulnarable()
             sprite.takeDmg(self.dmg)
             self.attack = False
+            
         
         
     def attackAction(self):
         sprite = self.player.sprites()[0]
-        if abs(self.x - sprite.rect.right) <= 50 or abs(self.x - sprite.rect.left) <= 50:
+        if abs(self.x - sprite.rect.right) <= 45 or abs(self.x - sprite.rect.left) <= 45:
             self.attackDmg(sprite)
             
             
@@ -273,7 +281,7 @@ class Slime(Enemy):
     def update(self):
         self.animations_state()
         self.attackAction()
-        #print("HP", self.getHP(), self.action, int(self.index),len(self.suface[self.action]) -1)
+        #print("HP", self.getHP(), self.action, self.index, int(self.index),len(self.suface[self.action]) -1)
 
 
 ######################
@@ -285,7 +293,7 @@ class Bat(Enemy):
         Args:
             attack = hop + attack + death.
         """
-        super().__init__(player, 200, 301 - 132, hp, dmg, W_Screen, H_Screen)
+        super().__init__(player, 200, 313 - 132, hp, dmg, W_Screen, H_Screen)
         self.screen = screen
         self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "idle/", i))) for i in os.listdir(os.path.join("Bat", "idle")) ]
                         ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "idlefly/", i))) for i in os.listdir(os.path.join("Bat", "idlefly")) ]
