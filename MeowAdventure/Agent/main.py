@@ -25,12 +25,10 @@ def main():
     player = pygame.sprite.GroupSingle()
     enemy = pygame.sprite.Group()
     portal = pygame.sprite.Group()
+    wall = pygame.sprite.Group()
     
-    state = States(windowns, player, enemy, portal)
+    state = States(windowns, player, enemy, portal, wall)
     
-    #enemy.add(Frog(windowns, player))
-    #enemy.add(Slime(windowns, player))
-    #enemy.add(Bat(windowns, player))
     
     player.add(Cat(windowns, enemy))
     state.createState()

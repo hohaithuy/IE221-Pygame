@@ -46,10 +46,11 @@ class Portal(pygame.sprite.Sprite):
             self.action = 'end'
             self.index = 0
             self.end = True
+            sprite.Pause()
     
     def update(self):
         if self.end == False:
             self.checkCollide()
         self.animations_state()
-        print(self.action, int(self.index))
+        #print(self.action, int(self.index))
         

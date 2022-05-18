@@ -136,7 +136,7 @@ class Frog(Enemy):
         self.attackAction()
         self.animations_state()
         self.move()
-        print("HP", self.getHP(), self.action, int(self.index),len(self.suface[self.action]) -1)
+        #print("HP", self.getHP(), self.action, int(self.index),len(self.suface[self.action]) -1)
 
         #print(self.action, "index", int(self.index))    
         

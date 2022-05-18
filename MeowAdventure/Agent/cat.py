@@ -44,6 +44,9 @@ class Cat(agent):
     def Pause(self):
         self.isPause = True
     
+    def Start(self):
+        self.isPause = False
+    
     def input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
@@ -120,6 +123,9 @@ class Cat(agent):
                 self.index = -1
                 self.end = True
         
+        if self.isJump == False and self.action == 'jump':
+            self.action = "idle"
+            self.resetAction()
         self.image = self.suface[self.action][int(self.index)]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
