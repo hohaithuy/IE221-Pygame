@@ -61,7 +61,7 @@ class Enemy(pygame.sprite.Sprite):
         
 class Frog(Enemy):
     
-    def __init__(self, screen, player, x, y,  hp = 2, dmg= 1, action_name = "idle"):  
+    def __init__(self, screen, player, x, y, limitX = 0, hp = 4, dmg= 1, action_name = "idle"):  
         """_summary_
 
         Args:
@@ -76,7 +76,7 @@ class Frog(Enemy):
                         ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Frog", "death/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","Frog", "death"))) ]
                         }
         self.action = action_name
-        
+        self.limitX = limitX
         self.image = self.suface['idle'][int(self.index)]
         self.rect =  self.image.get_rect(midbottom = (self.x, self.y))
         
@@ -88,8 +88,9 @@ class Frog(Enemy):
         if self.rect.right >= self.W_Screen:
             self.velocity = -2
             
-        elif self.rect.left <= 0:
+        elif self.rect.left <= self.limitX:
             self.velocity = 2
+        
         
         if self.velocity > 0:
             self.flip = False
@@ -186,7 +187,7 @@ class Frog(Enemy):
 ########################
 class Slime(Enemy):
     
-    def __init__(self, screen, player, x, y, hp = 7, dmg = 1, action_name = "idle"):  
+    def __init__(self, screen, player, x, y, hp = 6, dmg = 1, action_name = "idle"):  
         """_summary_
 
         Args:

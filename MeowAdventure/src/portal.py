@@ -22,6 +22,8 @@ class Portal(pygame.sprite.Sprite):
         self.image = self.suface['start'][int(self.index)]
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))  
+        self.sound = pygame.mixer.Sound("res/Sound/portalsound.wav")
+                      
         
         
     def animations_state(self):
@@ -29,9 +31,11 @@ class Portal(pygame.sprite.Sprite):
         
         if int(self.index) >= len(self.suface[self.action]):
             if self.action == 'end':
+                
                 self.kill()
             
             self.action = 'idle'
+            pygame.mixer.Sound.play(self.sound, -1)
             self.index = 0         
 
         self.image = self.suface[self.action][int(self.index)]
@@ -44,6 +48,7 @@ class Portal(pygame.sprite.Sprite):
         sprite = self.player.sprites()[0]
         if abs(self.x - sprite.rect.x) <= 20 or abs(self.x - sprite.rect.left) <= 20:
             self.action = 'end'
+            pygame.mixer.Sound.stop(self.sound)
             self.index = 0
             self.end = True
             sprite.Pause()

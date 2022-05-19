@@ -42,6 +42,8 @@ class Cat(agent):
         self.delay = 0
         
         self.sound = {"attack": pygame.mixer.Sound("res/Sound/sword-hit.wav"),
+                      "jump": pygame.mixer.Sound("res/Sound/catjump.wav"),
+                      "hit": pygame.mixer.Sound("res/Sound/cathit.wav"),
                       }
         
     def resetAction(self):
@@ -59,6 +61,7 @@ class Cat(agent):
         if keys[pygame.K_SPACE]:
             self.action = 'jump'
             self.isJump = True
+            pygame.mixer.Sound.play(self.sound['jump'])
 
         if keys[pygame.K_RIGHT]:
             x = self.x + (self.vel + 1)
@@ -89,6 +92,7 @@ class Cat(agent):
 
     def jump(self):
         if self.isJump and not self.envGravity:
+            
             if self.jumpCount >= -15:
                 neg = 1
                 if self.jumpCount < 0:
@@ -131,6 +135,7 @@ class Cat(agent):
             if not self.alive:
                 self.index = -1
                 self.end = True
+                #self.kill()
             
             if self.delay > 0:
                 self.delay -= 1
@@ -148,6 +153,7 @@ class Cat(agent):
             self.isVulnerable = False
             self.setHP(self.getHP() -  dmg)
             self.action = 'takeDmg'
+            pygame.mixer.Sound.play(self.sound['hit'])
             self.framerate = 0.1
             self.index = 0
             #print("Take Dmg")
@@ -158,7 +164,7 @@ class Cat(agent):
             self.action = 'death'
             self.framerate = 0.05
             self.index = 0
-            pygame.mixer.Sound.play(self.music)
+            #pygame.mixer.Sound.play(self.sound['death'])
     
 
     def setVulnarable(self):
