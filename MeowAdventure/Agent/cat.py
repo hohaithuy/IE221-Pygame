@@ -1,6 +1,7 @@
 import pygame
 import os
 from agent import agent
+from Mysort import MySort
 	
       
 class Cat(agent):
@@ -8,18 +9,19 @@ class Cat(agent):
     def __init__(self, screen, enemy, x = 100, y = 313, hp=10
                  , dmg=1, W_Screen = 900, H_Screen = 500):
         agent.__init__(self, x, y, hp, dmg, W_Screen, H_Screen)
-        self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "run/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "run")) ]
-                        ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "idle/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "idle")) ]
-                        ,'jump' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "jump/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "jump")) ]
-                        ,'attack1' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "attack1/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "attack1")) ]
-                        ,'attack2' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "attack2/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "attack2")) ]
-                        ,'takeDmg' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "takeDmg/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "takeDmg")) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "death/", i)).convert_alpha()) for i in os.listdir(os.path.join("MeowKnight", "death")) ]
+        self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "run/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "run"))) ]
+                        ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "idle/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "idle"))) ]
+                        ,'jump' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "jump/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "jump"))) ]
+                        ,'attack1' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "attack1/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "attack1"))) ]
+                        ,'attack2' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "attack2/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "attack2"))) ]
+                        ,'takeDmg' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "takeDmg/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "takeDmg"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "death/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "death"))) ]
                         }
         
         self.action = 'idle'
         self.gravity = 0
         self.index = 0
+        self.screen = screen
         self.image = self.suface['idle'][int(self.index)]
         
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
@@ -179,7 +181,9 @@ class Cat(agent):
                 self.apply_velocity()
                 self.checkHP()
                 self.checkCollide()
-                #print("HP", self.getHP(), int(self.index), self.action)
+                print("HP", self.getHP(), int(self.index), self.action)
             if not self.end:
                 self.animations_state()
-
+        #pygame.draw.rect(self.screen, 'blue', self.rect) 
+        #print("CAT", self.rect.top)
+        

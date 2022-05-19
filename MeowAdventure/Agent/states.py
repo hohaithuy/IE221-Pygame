@@ -51,12 +51,16 @@ class States():
            self.wall.add(Wall(self.screen, self.player, 320/1.92, 320, 212/1.92, 75/2.16, 8))
         
         elif self.lv == 3:
+            print("start", self.player.sprites()[0].rect.top)
+            self.player.sprites()[0].setLocation(100, 442)
+            print("end", self.player.sprites()[0].rect.top)
             self.enemy.add(Golem(self.screen, self.player, 800, 335))
             self.wall.add(Wall(self.screen, self.player, 88/1.28, 435, 212/1.28, 75/1.448, 8))
             self.wall.add(Wall(self.screen, self.player, 413/1.28, 340, 228/1.28, 120/1.448, 9))
             self.wall.add(Wall(self.screen, self.player, 759/1.28, 410, 320/1.28, 73/1.448, 10))
             
-            self.player.sprites()[0].setLocation(100, 442)
+            
+            
  
         
     
@@ -64,9 +68,10 @@ class States():
         self.screen.fill((0, 0, 0))
         self.screen.blit(self.background, (0, 0))
         self.wall.draw(self.screen)
+        self.player.draw(self.screen)
         self.enemy.draw(self.screen)
         self.portal.draw(self.screen)
-        self.player.draw(self.screen)
+        
         
         
         
@@ -80,10 +85,12 @@ class States():
             self.isLvUp = True
 
         self.draw()
+        self.wall.update()
+        self.player.update()
         self.enemy.update()
         self.portal.update()
-        self.player.update()
-        self.wall.update()
+       
+        
     
     def nextState(self):
         pass

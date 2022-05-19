@@ -1,11 +1,6 @@
 from cat import Cat 
-from enemy import Frog, Slime, Bat
-import pygame
-from object import Object
 import pygame
 from states import States
-import os
-
 from pygame import mixer
 
 

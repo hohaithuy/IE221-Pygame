@@ -1,11 +1,7 @@
-from enum import Flag
-from operator import index
-from optparse import check_choice
-from turtle import width
+import imp
 import pygame
 import os
-from cat import Cat
-from agent import agent
+from Mysort import MySort
 
 	
 
@@ -75,11 +71,11 @@ class Frog(Enemy):
         """
         super().__init__(player, x, y, hp, dmg)
         self.screen = screen
-        self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "run/", i)).convert_alpha()) for i in os.listdir(os.path.join("Frog", "run")) ]
-                        ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "idle/", i)).convert_alpha()) for i in os.listdir(os.path.join("Frog", "idle")) ]
-                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "attack/", i)).convert_alpha()) for i in os.listdir(os.path.join("Frog", "attack")) ]
-                        ,'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "hit/", i)).convert_alpha()) for i in os.listdir(os.path.join("Frog", "hit")) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "death/", i)).convert_alpha()) for i in os.listdir(os.path.join("Frog", "death")) ]
+        self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "run/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "run"))) ]
+                        ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "idle/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "idle"))) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "attack/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "attack"))) ]
+                        ,'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "hit/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "hit"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "death/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "death"))) ]
                         }
         self.action = action_name
         
@@ -197,11 +193,11 @@ class Slime(Enemy):
         """
         super().__init__(player, x, y, hp, dmg)
         self.screen = screen
-        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "idle/", i))) for i in os.listdir(os.path.join("Slime", "idle")) ]
-                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hop/", i))) for i in os.listdir(os.path.join("Slime", "hop")) ]
-                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "attack/", i))) for i in os.listdir(os.path.join("Slime", "attack")) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "death/", i))) for i in os.listdir(os.path.join("Slime", "death")) ]
-                        , 'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hit/", i))) for i in os.listdir(os.path.join("Slime", "hit")) ]
+        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "idle/", i))) for i in MySort(os.listdir(os.path.join("Slime", "idle"))) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hop/", i))) for i in MySort(os.listdir(os.path.join("Slime", "hop"))) ]
+                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "attack/", i))) for i in MySort(os.listdir(os.path.join("Slime", "attack"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "death/", i))) for i in MySort(os.listdir(os.path.join("Slime", "death"))) ]
+                        , 'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hit/", i))) for i in MySort(os.listdir(os.path.join("Slime", "hit"))) ]
                         }
 
         
@@ -296,12 +292,12 @@ class Bat(Enemy):
         """
         super().__init__(player, x, y - 132, hp, dmg)
         self.screen = screen
-        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "idle/", i))) for i in os.listdir(os.path.join("Bat", "idle")) ]
-                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "idlefly/", i))) for i in os.listdir(os.path.join("Bat", "idlefly")) ]
-                        +[pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "fly/", i))) for i in os.listdir(os.path.join("Bat", "fly")) ]
-                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "attack/", i))) for i in os.listdir(os.path.join("Bat", "attack")) ]
-                        ,'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "hit/", i))) for i in os.listdir(os.path.join("Bat", "hit")) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "death/", i))) for i in os.listdir(os.path.join("Bat", "death")) ]
+        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "idle/", i))) for i in MySort(os.listdir(os.path.join("Bat", "idle"))) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "idlefly/", i))) for i in MySort(os.listdir(os.path.join("Bat", "idlefly"))) ]
+                        +[pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "fly/", i))) for i in MySort(os.listdir(os.path.join("Bat", "fly"))) ]
+                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "attack/", i))) for i in MySort(os.listdir(os.path.join("Bat", "attack"))) ]
+                        ,'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "hit/", i))) for i in MySort(os.listdir(os.path.join("Bat", "hit"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "death/", i))) for i in MySort(os.listdir(os.path.join("Bat", "death"))) ]
                         }
 
         
@@ -388,11 +384,11 @@ class Golem(Enemy):
         """
         super().__init__(player, x, y, hp, dmg)
         self.screen = screen
-        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "idle/", i))) for i in os.listdir(os.path.join("Golem", "idle")) ]
-                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "glow/", i))) for i in os.listdir(os.path.join("Golem", "glow")) ]
-                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "attack/", i))) for i in os.listdir(os.path.join("Golem", "attack")) ]
-                        ,'laser' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "laser/", i))) for i in os.listdir(os.path.join("Golem", "laser")) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "death/", i))) for i in os.listdir(os.path.join("Golem", "death")) ]
+        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "idle/", i))) for i in MySort(os.listdir(os.path.join("Golem", "idle"))) ]
+                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "glow/", i))) for i in MySort(os.listdir(os.path.join("Golem", "glow"))) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "attack/", i))) for i in MySort(os.listdir(os.path.join("Golem", "attack"))) ]
+                        ,'laser' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "laser/", i))) for i in MySort(os.listdir(os.path.join("Golem", "laser"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "death/", i))) for i in MySort(os.listdir(os.path.join("Golem", "death"))) ]
                         }
 
         self.weapon = pygame.sprite.GroupSingle()
@@ -409,7 +405,7 @@ class Golem(Enemy):
             if self.action == 'death':
                 self.kill()
             elif self.isAttack:
-                self.framerate = 0.1
+                self.framerate = 0.2
                 self.action = 'idle'
                 self.isAttack = False
                 
@@ -434,15 +430,20 @@ class Golem(Enemy):
             self.attack = True
             self.resetAction()
             
-            if self.power == 1:
+            if self.power == 0:
                 self.action = 'laser'
-                self.framerate = 0.05 
+                self.framerate = 0.05
+                #print("GOLEM", self.rect.left)
+                print("CAT", sprite.rect.top)
+                self.weapon.add(Weapon(self.screen, self.player,self.rect.midtop[0], sprite.rect.top, 'laser')) 
             else:
                 self.action = 'attack'
+                self.weapon.add(Weapon(self.screen, self.player, self.x, self.y, 'shoot')) 
                 
             if self.action == 'attack':
                 self.power += 1
-                self.framerate = 0.2 
+                self.framerate = 0.2
+ 
            
         if int(self.index) == 17 and self.attack and self.checkCollide():
             sprite.setVulnarable()
@@ -452,7 +453,7 @@ class Golem(Enemy):
         
     def attackAction(self):
         sprite = self.player.sprites()[0]
-        if abs(self.x - sprite.rect.right) <= 100 or abs(self.x - sprite.rect.left) <= 100:
+        if abs(self.x - sprite.rect.right) <= 900:
             self.attackDmg(sprite)     
             
     def checkCollide(self):
@@ -477,34 +478,65 @@ class Golem(Enemy):
     def update(self):
         self.animations_state()
         self.attackAction()
-        print("HP", self.getHP(), self.action, self.power, int(self.index),len(self.suface[self.action]) -1)
+        self.weapon.draw(self.screen)
+        self.weapon.update()
+        
+        #pygame.draw.rect(self.screen, 'blue', self.rect) 
+        
+        #print("HP", self.getHP(), self.action, self.power, int(self.index),len(self.suface[self.action]) -1)
+        # if self.weapon.sprites() != []:
+        #     print(self.weapon.sprites()[0].action)
+
 
 
 class Weapon(pygame.sprite.Sprite):
-    def __init__(self, screen, player, x , y, type = "shoot"):
+    def __init__(self, screen, player, x , y, action = 'shoot'):
         super().__init__()
         self.x = x
         self.y = y
         self.screen = screen
         self.player = player
-        self.type = type
-        self.suface = {'shoot' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "shoot/", i)).convert_alpha()) for i in os.listdir(os.path.join("Golem", "shoot")) ]
-                        ,'laser' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "laser_weapon/", i)).convert_alpha()) for i in os.listdir(os.path.join("Golem", "laser_weapon")) ]
+        self.action = action
+        self.index = 0
+        self.flip = True
+        self.framerate = 0.1
+        self.suface = {'shoot' : [pygame.transform.scale(pygame.image.load(os.path.join("Golem", "shoot/", i)).convert_alpha(), (200, 200)) for i in MySort(os.listdir(os.path.join("Golem", "shoot"))) ]
+                        ,'laser' : [pygame.transform.scale(pygame.image.load(os.path.join("Golem", "laser_weapon/", i)).convert_alpha(), (900, 150)) for i in (MySort(os.listdir(os.path.join("Golem", "laser_weapon")))) ]
         }
-        self.image = pygame.transform.scale(pygame.image.load(os.path.join("background", "wall" + str(index) + ".png")).convert_alpha(), (w, h))
-        self.image.set_colorkey((0, 0, 0))          
-        self.rect = self.image.get_rect(topleft = (self.x, self.y))  
+        self.image = self.suface[self.action][0]
+        self.image = pygame.transform.flip(self.image, self.flip, False) 
+        #self.image.set_colorkey((0, 0, 0))    
+        #a = (sorted(MySort(os.listdir(os.path.join("Golem", "laser_weapon")))) 
+        #print(a)     
+        self.rect = self.image.get_rect(midright = (self.x, self.y))  
+        #print(self.x, self.rect.right)
         
-    def checkCollide(self):
+    def animations_state(self):            
+        self.index += self.framerate
+
+        if int(self.index) >= len(self.suface[self.action]):
+            self.index = 0
+            #self.framerate = 0.2
+            self.kill()
+
+        self.image = self.suface[self.action][int(self.index)]
+        self.image = pygame.transform.flip(self.image, self.flip, False) 
+        self.rect = self.image.get_rect(midright = (self.x, self.y))
+             
+    # def checkCollide(self):
         
-        if self.player.sprites() != []:
-            sprite = self.player.sprites()[0]
-            if sprite.rect.bottom - self.rect.top <= 10 and sprite.rect.bottom - self.rect.top >= 0 and sprite.rect.center[0] >= self.rect.left and sprite.rect.center[0] <= self.rect.right:
-                sprite.isJump = False
-                sprite.setLocation(sprite.x, self.rect.midtop[1])
-                sprite.jumpCount = 15
+    #     if self.player.sprites() != []:
+    #         sprite = self.player.sprites()[0]
+    #         if sprite.rect.bottom - self.rect.top <= 10 and sprite.rect.bottom - self.rect.top >= 0 and sprite.rect.center[0] >= self.rect.left and sprite.rect.center[0] <= self.rect.right:
+    #             sprite.isJump = False
+    #             sprite.setLocation(sprite.x, self.rect.midtop[1])
+    #             sprite.jumpCount = 15
+                
     def update(self):
-        self.checkCollide()
-        #print(self.action, int(self.index))
+        self.animations_state()
+        #print(self.y, self.rect.center)
         #pygame.draw.rect(self.screen, 'blue', self.rect) 
         
+        #print(self.action, int(self.index))
+        #self.checkCollide()
+        #print(self.action, int(self.index)) 
