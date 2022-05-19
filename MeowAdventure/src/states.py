@@ -8,7 +8,7 @@ class States():
     """
     Lớp lưu trữ, quản lý trạng thái, các level của game
     """
-    def __init__(self, screen, player, enemy, portal, wall, lv = 3):
+    def __init__(self, screen, player, enemy, portal, wall, lv = 0):
         self.lv = lv
         self.enemy = enemy
         self.player = player
@@ -25,6 +25,26 @@ class States():
     def loadImage(self, index):
         return pygame.image.load(os.path.join("res","background", "background-final" + str(index) + ".png"))
 
+    
+    
+    def menuStart(self):
+        self.player.sprites()[0].Pause()
+        
+        # while(True):
+        #     keys = pygame.key.get_pressed()
+            
+                
+        #     if keys[pygame.K_UP]:
+        #         pass
+
+        #     elif keys[pygame.K_DOWN] and not self.isAttack:
+        #         pass
+            
+        #     elif keys[pygame.K_KP_ENTER]:
+        #         self.lv += 1
+        #         self.player.sprites()[0].Start()
+        #         break
+
     def createState(self):
         self.isLvUp = False
         self.player.sprites()[0].Start()
@@ -36,7 +56,9 @@ class States():
             self.player.sprites()[0].setLocation(100, 100)
             
         if self.lv == 0:
-            pass
+            
+            self.wall.add(Wall(self.screen, self.player, 0, 409, 1151/1.278, 277/1.43, 1))
+            self.menuStart()
         elif self.lv == 1:
             pygame.mixer.Sound.play(self.music, -1)
             #self.enemy.add(Slime(self.screen, self.player, 500, 313))
@@ -72,11 +94,7 @@ class States():
             self.wall.add(Wall(self.screen, self.player, 759/1.28, 410, 320/1.28, 73/1.448, 10))
             self.wall.add(Wall(self.screen, self.player, 0, 535, 1152/1.28, 85/1.448, 11))
             
-            
-            
- 
-        
-    
+
     def draw(self):
         self.screen.fill((0, 0, 0))
         self.screen.blit(self.background, (0, 0))
@@ -105,7 +123,7 @@ class States():
             self.lv += 1
             self.createState()
             
-        if self.enemy.sprites() == [] and self.portal.sprites() == []:
+        if self.enemy.sprites() == [] and self.portal.sprites() == [] and self.lv != 0:
             
             if self.lv == 2:
                 self.portal.add(Portal(self.screen, self.player, 850, 460))

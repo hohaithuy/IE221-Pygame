@@ -212,11 +212,13 @@ class Cat(agent):
 
 
     def update(self):
-        if self.isPause == False:
+        
             if self.alive:
-                self.input()
+                if self.isPause == False:
+                    self.input()
+                    self.apply_velocity()
                 self.jump()
-                self.apply_velocity()
+                
                 self.checkHP()
                 self.checkCollide()
                 self.envGravityApply()
