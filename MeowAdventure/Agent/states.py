@@ -5,7 +5,7 @@ from wall import Wall
 from portal import Portal
 
 class States():
-    def __init__(self, screen, player, enemy, portal, wall, lv = 3):
+    def __init__(self, screen, player, enemy, portal, wall, lv = 2):
         self.lv = lv
         self.enemy = enemy
         self.player = player
@@ -27,7 +27,7 @@ class States():
         self.wall.empty()
 
         if self.lv != 1:
-            self.player.sprites()[0].setLocation(100, 313)
+            self.player.sprites()[0].setLocation(100, 100)
             
         if self.lv == 0:
             pass
