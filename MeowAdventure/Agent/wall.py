@@ -27,5 +27,5 @@ class Wall(pygame.sprite.Sprite):
     def update(self):
         self.checkCollide()
         #print(self.action, int(self.index))
-        # pygame.draw.rect(self.screen, 'blue', self.rect) 
+        #pygame.draw.rect(self.screen, 'blue', self.rect) 
         

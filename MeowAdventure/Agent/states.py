@@ -5,7 +5,7 @@ from wall import Wall
 from portal import Portal
 
 class States():
-    def __init__(self, screen, player, enemy, portal, wall, lv = 2):
+    def __init__(self, screen, player, enemy, portal, wall, lv = 3):
         self.lv = lv
         self.enemy = enemy
         self.player = player
@@ -14,6 +14,9 @@ class States():
         
         self.screen = screen
         self.background = pygame.transform.scale(pygame.image.load(os.path.join("background", "background-final" + str(self.lv) + ".png")), (self.screen.get_width(), self.screen.get_height()))
+        self.heart = [pygame.transform.scale(pygame.image.load(os.path.join("background", "heart" + str(i +1) + ".png")).convert_alpha(), (25, 25)) for i in range(3) ]
+                       
+        #self.heart.set_colorkey((0, 0, 0))
         self.isLvUp = False
     
     def loadImage(self, index):
@@ -34,6 +37,7 @@ class States():
         elif self.lv == 1:
             #self.enemy.add(Slime(self.screen, self.player, 500, 313))
             self.enemy.add(Frog(self.screen, self.player, 700, 313))
+            self.wall.add(Wall(self.screen, self.player, 0, 409, 1151/1.278, 277/1.43, 1))
             
         elif self.lv == 2:
            self.enemy.add(Frog(self.screen, self.player, 700, 437))
@@ -49,15 +53,15 @@ class States():
            self.wall.add(Wall(self.screen, self.player, 676/1.92, 575, 288/1.92, 56/2.16, 6))
            self.wall.add(Wall(self.screen, self.player, 966/1.92, 535, 765/1.92, 144/2.16, 7))
            self.wall.add(Wall(self.screen, self.player, 320/1.92, 320, 212/1.92, 75/2.16, 8))
+           
         
         elif self.lv == 3:
-            print("start", self.player.sprites()[0].rect.top)
             self.player.sprites()[0].setLocation(100, 442)
-            print("end", self.player.sprites()[0].rect.top)
-            self.enemy.add(Golem(self.screen, self.player, 800, 335))
+            self.enemy.add(Golem(self.screen, self.player, 800, 300))
             self.wall.add(Wall(self.screen, self.player, 88/1.28, 435, 212/1.28, 75/1.448, 8))
             self.wall.add(Wall(self.screen, self.player, 413/1.28, 340, 228/1.28, 120/1.448, 9))
             self.wall.add(Wall(self.screen, self.player, 759/1.28, 410, 320/1.28, 73/1.448, 10))
+            self.wall.add(Wall(self.screen, self.player, 0, 535, 1152/1.28, 85/1.448, 11))
             
             
             
@@ -67,6 +71,18 @@ class States():
     def draw(self):
         self.screen.fill((0, 0, 0))
         self.screen.blit(self.background, (0, 0))
+        
+        for i in range(5):
+            if i <=  self.player.sprites()[0].getHP() //2 -1:
+                self.screen.blit(self.heart[0], (30 *i + 5, 10))
+            elif i == self.player.sprites()[0].getHP() //2:
+                if self.player.sprites()[0].getHP() %2 == 1:
+                    self.screen.blit(self.heart[1], (30 *i + 5, 10))
+                else:
+                    self.screen.blit(self.heart[2], (30 *i + 5, 10))
+            else:
+                self.screen.blit(self.heart[2], (30 *i + 5, 10))
+                
         self.wall.draw(self.screen)
         self.player.draw(self.screen)
         self.enemy.draw(self.screen)
@@ -81,7 +97,11 @@ class States():
             self.createState()
             
         if self.enemy.sprites() == [] and self.portal.sprites() == []:
-            self.portal.add(Portal(self.screen, self.player, 800, 320))
+            
+            if self.lv == 2:
+                self.portal.add(Portal(self.screen, self.player, 850, 460))
+            else:
+                self.portal.add(Portal(self.screen, self.player, 800, 320))
             self.isLvUp = True
 
         self.draw()

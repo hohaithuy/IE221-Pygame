@@ -39,6 +39,7 @@ class Cat(agent):
         self.wall = wall
         self.isPause = False
         self.envGravity = 0
+        self.delay = 0
         
         self.music = pygame.mixer.Sound("Sound/sword-hit.wav")
         
@@ -126,6 +127,9 @@ class Cat(agent):
             if not self.alive:
                 self.index = -1
                 self.end = True
+            
+            if self.delay > 0:
+                self.delay -= 1
         
         if self.isJump == False and self.action == 'jump':
             self.action = "idle"
@@ -156,13 +160,16 @@ class Cat(agent):
         self.isVulnerable = True
 
     def attackDmg(self, sprite):
-        if self.action == "attack1" and self.attack and int(self.index) == 4:           
-            sprite.takeDmg(self.dmg)
-            self.attack = False
-            
-        elif self.action == "attack2" and self.attack and int(self.index) == 1:
-            sprite.takeDmg(self.dmg)
-            self.attack = False
+        if self.delay == 0:
+            if self.action == "attack1" and self.attack and int(self.index) == 4:         
+                sprite.takeDmg(self.dmg +1)
+                self.attack = False
+                self.delay = 3
+                
+            elif self.action == "attack2" and self.attack and int(self.index) == 1:
+                sprite.takeDmg(self.dmg)
+                self.attack = False
+                self.delay = 3
             
             
     def checkCollide(self):
@@ -206,7 +213,7 @@ class Cat(agent):
                 self.checkHP()
                 self.checkCollide()
                 self.envGravityApply()
-                print("HP", self.getHP(), int(self.index), self.action)
+                #print("HP", self.getHP(), self.delay, int(self.index), self.action)
             if not self.end:
                 self.animations_state()
         #pygame.draw.rect(self.screen, 'blue', self.rect) 

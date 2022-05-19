@@ -63,7 +63,7 @@ class Enemy(pygame.sprite.Sprite):
         
 class Frog(Enemy):
     
-    def __init__(self, screen, player, x, y,  hp = 10, dmg= 2, action_name = "idle"):  
+    def __init__(self, screen, player, x, y,  hp = 7, dmg= 1, action_name = "idle"):  
         """_summary_
 
         Args:
@@ -100,9 +100,10 @@ class Frog(Enemy):
     def animations_state(self):
         self.index += self.framerate
         
-           
         if int(self.index) >= len(self.suface[self.action]):
-            if self.isAttack:
+            if self.action == 'death':
+                self.kill()
+            elif self.isAttack:
                 self.framerate = 0.1
                 self.action = 'idle'
                 self.isAttack = False
@@ -110,9 +111,6 @@ class Frog(Enemy):
                 
             elif self.action == 'idle':
                 self.action = 'run'
-                
-            elif self.action == 'death':
-                self.kill()
                 
             else: self.action = 'idle'
                 
@@ -146,7 +144,7 @@ class Frog(Enemy):
             self.attack = True
             self.resetAction()
         
-        if int(self.index) >= 6 and self.attack and self.checkCollide():
+        if (int(self.index) == 6 or int(self.index) == 10) and self.attack and self.checkCollide():
             sprite.setVulnarable()
             sprite.takeDmg(self.dmg)
             self.attack = False
@@ -308,7 +306,14 @@ class Bat(Enemy):
         
     def animations_state(self):
         self.index += self.framerate
-                  
+        
+        
+        if self.isAttack and int(self.index) >= 17 and self.attack and self.checkCollide():
+            sprite = self.player.sprites()[0]
+            sprite.setVulnarable()
+            sprite.takeDmg(self.dmg)
+            self.attack = False
+            
         if int(self.index) >= len(self.suface[self.action]):
             if self.action == 'death':
                 self.kill()
@@ -335,18 +340,15 @@ class Bat(Enemy):
             self.delay = 4
             self.attack = True
             self.resetAction()
-           
-        if int(self.index) == 17 and self.attack and self.checkCollide():
-            sprite.setVulnarable()
-            sprite.takeDmg(self.dmg)
-            self.attack = False
+        #print(int(self.index))
+        
         
         
     def attackAction(self):
         sprite = self.player.sprites()[0]
         rect = (self.suface['attack'][17]).get_rect(midtop = (self.x, self.y))
         
-        if (abs(self.x - sprite.rect.right) <= 25 or abs(self.x - sprite.rect.left) <= 25) and rect.center[1] <= sprite.rect.bottom and rect.center[1] >= sprite.rect.top:
+        if (abs(self.x - sprite.rect.right) <= 25 or abs(self.x - sprite.rect.left) <= 25) and rect.bottom >= sprite.rect.bottom and rect.top <= sprite.rect.top:
             self.attackDmg(sprite)     
             
     def checkCollide(self):
@@ -372,7 +374,8 @@ class Bat(Enemy):
         self.animations_state()
         self.attackAction()
         #print("HP", self.getHP(), self.action, int(self.index),len(self.suface[self.action]) -1)
-
+        #pygame.draw.rect(self.screen, 'blue', self.rect) 
+        
 ########################
 class Golem(Enemy):
     
@@ -391,7 +394,7 @@ class Golem(Enemy):
                         ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "death/", i))) for i in MySort(os.listdir(os.path.join("Golem", "death"))) ]
                         }
 
-        self.weapon = pygame.sprite.GroupSingle()
+        self.weapon = pygame.sprite.Group()
         self.action = action_name
         self.flip = True
         self.image = self.suface['idle'][int(self.index)]
@@ -400,7 +403,8 @@ class Golem(Enemy):
         
     def animations_state(self):
         self.index += self.framerate
-                  
+        if self.action == 'laser':
+            self.power = 0
         if int(self.index) >= len(self.suface[self.action]):
             if self.action == 'death':
                 self.kill()
@@ -408,19 +412,15 @@ class Golem(Enemy):
                 self.framerate = 0.2
                 self.action = 'idle'
                 self.isAttack = False
-                
-                if self.action == 'laser':
-                    self.power = 0
 
             self.resetAction()
             if self.delay != 0:
                 self.delay -= 1
 
         self.image = self.suface[self.action][int(self.index)]
+        self.image = pygame.transform.scale(self.image, (self.image.get_width() * 1.3, self.image.get_height() *1.3))
         self.image = pygame.transform.flip(self.image, self.flip, False)
         self.rect = self.image.get_rect(midtop = (self.x, self.y))  
-        #pygame.draw.rect(self.screen, 'blue', self.rect) 
-        #pygame.draw.circle(self.screen, 'red', (self.x, self.y), 3)
         
     def attackDmg(self, sprite):
         if self.delay == 0:
@@ -430,42 +430,40 @@ class Golem(Enemy):
             self.attack = True
             self.resetAction()
             
-            if self.power == 0:
+            if self.power == 3:
                 self.action = 'laser'
                 self.framerate = 0.05
-                #print("GOLEM", self.rect.left)
-                print("CAT", sprite.rect.top)
                 self.weapon.add(Weapon(self.screen, self.player,self.rect.midtop[0], sprite.rect.top, 'laser')) 
             else:
                 self.action = 'attack'
-                self.weapon.add(Weapon(self.screen, self.player, self.x, self.y, 'shoot')) 
-                
-            if self.action == 'attack':
                 self.power += 1
-                self.framerate = 0.2
  
-           
-        if int(self.index) == 17 and self.attack and self.checkCollide():
+        
+        if self.weapon.sprites() != []:
+            if int(self.index) >= 4 and self.action == 'laser' and self.weapon.sprites()[0].checkCollide() and self.attack :
+                sprite.setVulnarable()
+                sprite.takeDmg(self.dmg)
+                self.attack = False
+        elif int(self.index) >= 6 and self.action == 'attack' and self.checkCollide() and self.attack:
             sprite.setVulnarable()
             sprite.takeDmg(self.dmg)
             self.attack = False
-        
+            
         
     def attackAction(self):
+        """_summary_
+        """
         sprite = self.player.sprites()[0]
-        if abs(self.x - sprite.rect.right) <= 900:
-            self.attackDmg(sprite)     
+        if self.power == 3 and abs(self.x - sprite.rect.right) <= 900:
+            self.attackDmg(sprite)    
+        elif abs(self.x - sprite.rect.right) <= 70:
+            self.attackDmg(sprite)
             
-    def checkCollide(self):
-        hits = pygame.sprite.spritecollide(self, self.player , False)#get list spire in groups
-        if hits != []:   
-            return True
-        return False
     
     def takeDmg(self, dmg):
         self.setHP(self.getHP() - dmg)
         if self.getHP() > 0:
-            self.action = 'hit'
+            self.action = 'idle'
             self.resetAction()
             self.istakeDmg = True
         else:
@@ -475,17 +473,26 @@ class Golem(Enemy):
                 self.resetAction()
                 self.isLife = False
 
+    
+    def checkCollide(self):
+            hits = pygame.sprite.spritecollide(self, self.player , False)#get list spire in groups
+            if hits != []:   
+                return True
+            return False
+    
     def update(self):
+        
         self.animations_state()
         self.attackAction()
-        self.weapon.draw(self.screen)
-        self.weapon.update()
+        
+        if self.weapon.sprites() != []:
+            self.weapon.draw(self.screen)
+            self.weapon.update()
+       
         
         #pygame.draw.rect(self.screen, 'blue', self.rect) 
         
-        #print("HP", self.getHP(), self.action, self.power, int(self.index),len(self.suface[self.action]) -1)
-        # if self.weapon.sprites() != []:
-        #     print(self.weapon.sprites()[0].action)
+        #print("HP", self.getHP(), self.action, int(self.index),len(self.suface[self.action]) -1)
 
 
 
@@ -501,7 +508,7 @@ class Weapon(pygame.sprite.Sprite):
         self.flip = True
         self.framerate = 0.1
         self.suface = {'shoot' : [pygame.transform.scale(pygame.image.load(os.path.join("Golem", "shoot/", i)).convert_alpha(), (200, 200)) for i in MySort(os.listdir(os.path.join("Golem", "shoot"))) ]
-                        ,'laser' : [pygame.transform.scale(pygame.image.load(os.path.join("Golem", "laser_weapon/", i)).convert_alpha(), (900, 150)) for i in (MySort(os.listdir(os.path.join("Golem", "laser_weapon")))) ]
+                        ,'laser' : [pygame.transform.scale(pygame.image.load(os.path.join("Golem", "laser_weapon/", i)).convert_alpha(), (900, 100)) for i in (MySort(os.listdir(os.path.join("Golem", "laser_weapon")))) ]
         }
         self.image = self.suface[self.action][0]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
@@ -522,21 +529,15 @@ class Weapon(pygame.sprite.Sprite):
         self.image = self.suface[self.action][int(self.index)]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
         self.rect = self.image.get_rect(midright = (self.x, self.y))
-             
-    # def checkCollide(self):
         
-    #     if self.player.sprites() != []:
-    #         sprite = self.player.sprites()[0]
-    #         if sprite.rect.bottom - self.rect.top <= 10 and sprite.rect.bottom - self.rect.top >= 0 and sprite.rect.center[0] >= self.rect.left and sprite.rect.center[0] <= self.rect.right:
-    #             sprite.isJump = False
-    #             sprite.setLocation(sprite.x, self.rect.midtop[1])
-    #             sprite.jumpCount = 15
+    def checkCollide(self):
+            hits = pygame.sprite.spritecollide(self, self.player , False)#get list spire in groups
+            if hits != []:   
+                return True
+            return False
                 
     def update(self):
         self.animations_state()
-        #print(self.y, self.rect.center)
         #pygame.draw.rect(self.screen, 'blue', self.rect) 
-        
-        #print(self.action, int(self.index))
-        #self.checkCollide()
+        print(self.action, int(self.index))
         #print(self.action, int(self.index)) 
