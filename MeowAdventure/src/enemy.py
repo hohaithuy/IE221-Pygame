@@ -1,14 +1,12 @@
-import imp
 import pygame
 import os
-from Mysort import MySort
+from src.Mysort import MySort
 
 	
 
 class Enemy(pygame.sprite.Sprite):
+    """Lớp quái thú"""
     def __init__(self, player, x, y, hp, dmg, W_Screen = 900, H_Screen = 500):
-        """
-        """
         super().__init__()
 
         self.x = x
@@ -63,25 +61,28 @@ class Enemy(pygame.sprite.Sprite):
         
 class Frog(Enemy):
     
-    def __init__(self, screen, player, x, y,  hp = 7, dmg= 1, action_name = "idle"):  
+    def __init__(self, screen, player, x, y,  hp = 2, dmg= 1, action_name = "idle"):  
         """_summary_
 
         Args:
-            attack = hop + attack + death.
+            attack  = hop + attack + death.
         """
         super().__init__(player, x, y, hp, dmg)
         self.screen = screen
-        self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "run/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "run"))) ]
-                        ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "idle/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "idle"))) ]
-                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "attack/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "attack"))) ]
-                        ,'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "hit/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "hit"))) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Frog", "death/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("Frog", "death"))) ]
+        self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Frog", "run/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","Frog", "run"))) ]
+                        ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Frog", "idle/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","Frog", "idle"))) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Frog", "attack/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","Frog", "attack"))) ]
+                        ,'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Frog", "hit/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","Frog", "hit"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Frog", "death/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","Frog", "death"))) ]
                         }
         self.action = action_name
         
         self.image = self.suface['idle'][int(self.index)]
         self.rect =  self.image.get_rect(midbottom = (self.x, self.y))
-        #self.flip_cat = False
+        
+        self.sound = {#"attack": pygame.mixer.Sound("res/Sound/slimejump.wav"),
+                      "hit": pygame.mixer.Sound("res/Sound/froghit.wav"),
+                      "death": pygame.mixer.Sound("res/Sound/frogdie.wav")}
                 
     def move(self):
         if self.rect.right >= self.W_Screen:
@@ -167,10 +168,12 @@ class Frog(Enemy):
         self.setHP(self.getHP() - dmg)
         if self.getHP() > 0:
             self.action = 'hit'
+            pygame.mixer.Sound.play(self.sound['hit'])
             self.resetAction()
             self.istakeDmg = True
         else:
             self.action = 'death'
+            pygame.mixer.Sound.play(self.sound['death'])
             self.framerate = 0.05
             if self.isLife:
                 self.resetAction()
@@ -191,11 +194,11 @@ class Slime(Enemy):
         """
         super().__init__(player, x, y, hp, dmg)
         self.screen = screen
-        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "idle/", i))) for i in MySort(os.listdir(os.path.join("Slime", "idle"))) ]
-                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hop/", i))) for i in MySort(os.listdir(os.path.join("Slime", "hop"))) ]
-                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "attack/", i))) for i in MySort(os.listdir(os.path.join("Slime", "attack"))) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "death/", i))) for i in MySort(os.listdir(os.path.join("Slime", "death"))) ]
-                        , 'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Slime", "hit/", i))) for i in MySort(os.listdir(os.path.join("Slime", "hit"))) ]
+        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Slime", "idle/", i))) for i in MySort(os.listdir(os.path.join("res","Slime", "idle"))) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Slime", "hop/", i))) for i in MySort(os.listdir(os.path.join("res","Slime", "hop"))) ]
+                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Slime", "attack/", i))) for i in MySort(os.listdir(os.path.join("res","Slime", "attack"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Slime", "death/", i))) for i in MySort(os.listdir(os.path.join("res","Slime", "death"))) ]
+                        , 'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Slime", "hit/", i))) for i in MySort(os.listdir(os.path.join("res","Slime", "hit"))) ]
                         }
 
         
@@ -203,14 +206,16 @@ class Slime(Enemy):
         
         self.image = self.suface['idle'][int(self.index)]
         self.rect =  self.image.get_rect(midbottom = (self.x, self.y))
-        self.music = pygame.mixer.Sound('Sound/slimejump.wav')
+        self.sound = {"jump": pygame.mixer.Sound("res/Sound/slimejump.wav"),
+                      "hit": pygame.mixer.Sound("res/Sound/slimehit.wav"),
+                      "death": pygame.mixer.Sound("res/Sound/slimedie.wav")}
         
     def animations_state(self):
         self.index += self.framerate
         
         
         if round(self.index, 2) == 13.0 and self.isAttack:
-            pygame.mixer.Sound.play(self.music)
+            pygame.mixer.Sound.play(self.sound['jump'])
             
         if int(self.index) >= len(self.suface[self.action]):
             
@@ -264,10 +269,12 @@ class Slime(Enemy):
         self.setHP(self.getHP() - dmg)
         if self.getHP() > 0:
             self.action = 'hit'
+            pygame.mixer.Sound.play(self.sound['hit'])
             self.resetAction()
             self.istakeDmg = True
         else:
             self.action = 'death'
+            pygame.mixer.Sound.play(self.sound['death'])
             self.framerate = 0.05
             if self.isLife:
                 self.resetAction()
@@ -290,12 +297,12 @@ class Bat(Enemy):
         """
         super().__init__(player, x, y - 132, hp, dmg)
         self.screen = screen
-        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "idle/", i))) for i in MySort(os.listdir(os.path.join("Bat", "idle"))) ]
-                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "idlefly/", i))) for i in MySort(os.listdir(os.path.join("Bat", "idlefly"))) ]
-                        +[pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "fly/", i))) for i in MySort(os.listdir(os.path.join("Bat", "fly"))) ]
-                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "attack/", i))) for i in MySort(os.listdir(os.path.join("Bat", "attack"))) ]
-                        ,'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "hit/", i))) for i in MySort(os.listdir(os.path.join("Bat", "hit"))) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Bat", "death/", i))) for i in MySort(os.listdir(os.path.join("Bat", "death"))) ]
+        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Bat", "idle/", i))) for i in MySort(os.listdir(os.path.join("res","Bat", "idle"))) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Bat", "idlefly/", i))) for i in MySort(os.listdir(os.path.join("res","Bat", "idlefly"))) ]
+                        +[pygame.transform.scale2x(pygame.image.load(os.path.join("res","Bat", "fly/", i))) for i in MySort(os.listdir(os.path.join("res","Bat", "fly"))) ]
+                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Bat", "attack/", i))) for i in MySort(os.listdir(os.path.join("res","Bat", "attack"))) ]
+                        ,'hit' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Bat", "hit/", i))) for i in MySort(os.listdir(os.path.join("res","Bat", "hit"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Bat", "death/", i))) for i in MySort(os.listdir(os.path.join("res","Bat", "death"))) ]
                         }
 
         
@@ -303,6 +310,10 @@ class Bat(Enemy):
         
         self.image = self.suface['idle'][int(self.index)]
         self.rect =  self.image.get_rect(midtop = (self.x, self.y))
+        self.sound = {#"jump": pygame.mixer.Sound("res/Sound/slimejump.wav"),
+                      #"hit": pygame.mixer.Sound("res/Sound/slimehit.wav"),
+                      "death": pygame.mixer.Sound("res/Sound/batdie.wav")}
+        
         
     def animations_state(self):
         self.index += self.framerate
@@ -365,6 +376,7 @@ class Bat(Enemy):
             self.istakeDmg = True
         else:
             self.action = 'death'
+            pygame.mixer.Sound.play(self.sound['death'])
             self.framerate = 0.05
             if self.isLife:
                 self.resetAction()
@@ -387,11 +399,11 @@ class Golem(Enemy):
         """
         super().__init__(player, x, y, hp, dmg)
         self.screen = screen
-        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "idle/", i))) for i in MySort(os.listdir(os.path.join("Golem", "idle"))) ]
-                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "glow/", i))) for i in MySort(os.listdir(os.path.join("Golem", "glow"))) ]
-                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "attack/", i))) for i in MySort(os.listdir(os.path.join("Golem", "attack"))) ]
-                        ,'laser' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "laser/", i))) for i in MySort(os.listdir(os.path.join("Golem", "laser"))) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("Golem", "death/", i))) for i in MySort(os.listdir(os.path.join("Golem", "death"))) ]
+        self.suface = {'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Golem", "idle/", i))) for i in MySort(os.listdir(os.path.join("res","Golem", "idle"))) ]
+                        + [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Golem", "glow/", i))) for i in MySort(os.listdir(os.path.join("res","Golem", "glow"))) ]
+                        ,'attack' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Golem", "attack/", i))) for i in MySort(os.listdir(os.path.join("res","Golem", "attack"))) ]
+                        ,'laser' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Golem", "laser/", i))) for i in MySort(os.listdir(os.path.join("res","Golem", "laser"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","Golem", "death/", i))) for i in MySort(os.listdir(os.path.join("res","Golem", "death"))) ]
                         }
 
         self.weapon = pygame.sprite.Group()
@@ -400,6 +412,10 @@ class Golem(Enemy):
         self.image = self.suface['idle'][int(self.index)]
         self.rect =  self.image.get_rect(midtop = (self.x, self.y))
         self.power = 0
+        self.sound = {"laser": pygame.mixer.Sound("res/Sound/LaserBeam_Out.wav")}
+                      #"hit": pygame.mixer.Sound("res/Sound/slimehit.wav"),
+                      #"death": pygame.mixer.Sound("res/Sound/slimedie.wav")}
+        
         
     def animations_state(self):
         self.index += self.framerate
@@ -434,6 +450,7 @@ class Golem(Enemy):
                 self.action = 'laser'
                 self.framerate = 0.05
                 self.weapon.add(Weapon(self.screen, self.player,self.rect.midtop[0], sprite.rect.top, 'laser')) 
+                
             else:
                 self.action = 'attack'
                 self.power += 1
@@ -451,12 +468,11 @@ class Golem(Enemy):
             
         
     def attackAction(self):
-        """_summary_
-        """
+       
         sprite = self.player.sprites()[0]
         if self.power == 3 and abs(self.x - sprite.rect.right) <= 900:
             self.attackDmg(sprite)    
-        elif abs(self.x - sprite.rect.right) <= 70:
+        elif abs(self.x - sprite.rect.right) <= 80:
             self.attackDmg(sprite)
             
     
@@ -486,6 +502,7 @@ class Golem(Enemy):
         self.attackAction()
         
         if self.weapon.sprites() != []:
+            pygame.mixer.Sound.play(self.sound['laser'])
             self.weapon.draw(self.screen)
             self.weapon.update()
        
@@ -507,13 +524,13 @@ class Weapon(pygame.sprite.Sprite):
         self.index = 0
         self.flip = True
         self.framerate = 0.1
-        self.suface = {'shoot' : [pygame.transform.scale(pygame.image.load(os.path.join("Golem", "shoot/", i)).convert_alpha(), (200, 200)) for i in MySort(os.listdir(os.path.join("Golem", "shoot"))) ]
-                        ,'laser' : [pygame.transform.scale(pygame.image.load(os.path.join("Golem", "laser_weapon/", i)).convert_alpha(), (900, 100)) for i in (MySort(os.listdir(os.path.join("Golem", "laser_weapon")))) ]
+        self.suface = {'shoot' : [pygame.transform.scale(pygame.image.load(os.path.join("res","Golem", "shoot/", i)).convert_alpha(), (200, 200)) for i in MySort(os.listdir(os.path.join("res","Golem", "shoot"))) ]
+                        ,'laser' : [pygame.transform.scale(pygame.image.load(os.path.join("res","Golem", "laser_weapon/", i)).convert_alpha(), (900, 100)) for i in (MySort(os.listdir(os.path.join("res","Golem", "laser_weapon")))) ]
         }
         self.image = self.suface[self.action][0]
         self.image = pygame.transform.flip(self.image, self.flip, False) 
         #self.image.set_colorkey((0, 0, 0))    
-        #a = (sorted(MySort(os.listdir(os.path.join("Golem", "laser_weapon")))) 
+        #a = (sorted(MySort(os.listdir(os.path.join("res","Golem", "laser_weapon")))) 
         #print(a)     
         self.rect = self.image.get_rect(midright = (self.x, self.y))  
         #print(self.x, self.rect.right)

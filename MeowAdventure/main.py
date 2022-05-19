@@ -1,7 +1,8 @@
-from cat import Cat 
+from src.cat import Cat 
+from src.states import States
 import pygame
-from states import States
 from pygame import mixer
+
 
 
 WIDTH, HEIGHT = 900, 500
@@ -21,11 +22,12 @@ def main():
     enemy = pygame.sprite.Group()
     portal = pygame.sprite.Group()
     wall = pygame.sprite.Group()
+    player.add(Cat(windowns, enemy, wall))
     
     state = States(windowns, player, enemy, portal, wall)
     
     
-    player.add(Cat(windowns, enemy, wall))
+    
     state.createState()
     
     run = True    

@@ -15,9 +15,9 @@ class Portal(pygame.sprite.Sprite):
         self.flip = True
         self.end = False
          
-        self.suface = {'idle' : [pygame.transform.scale(pygame.image.load(os.path.join("portal", "idle", i)).convert_alpha(), (100, 100)) for i in os.listdir(os.path.join("portal", "idle")) ]
-                    ,'start' : [pygame.transform.scale(pygame.image.load(os.path.join("portal", "start", i)).convert_alpha(), (100, 100)) for i in os.listdir(os.path.join("portal", "start")) ]
-                    , 'end' : [pygame.transform.scale(pygame.image.load(os.path.join("portal", "end", i)).convert_alpha(), (100, 100)   ) for i in os.listdir(os.path.join("portal", "end")) ]
+        self.suface = {'idle' : [pygame.transform.scale(pygame.image.load(os.path.join("res","portal", "idle", i)).convert_alpha(), (100, 100)) for i in os.listdir(os.path.join("res","portal", "idle")) ]
+                    ,'start' : [pygame.transform.scale(pygame.image.load(os.path.join("res","portal", "start", i)).convert_alpha(), (100, 100)) for i in os.listdir(os.path.join("res","portal", "start")) ]
+                    , 'end' : [pygame.transform.scale(pygame.image.load(os.path.join("res","portal", "end", i)).convert_alpha(), (100, 100)   ) for i in os.listdir(os.path.join("res","portal", "end")) ]
                     }
         self.image = self.suface['start'][int(self.index)]
         self.image.set_colorkey((0, 0, 0))

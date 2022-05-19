@@ -1,5 +1,3 @@
-from operator import index
-from re import S
 import pygame
 import os
 
@@ -11,7 +9,7 @@ class Wall(pygame.sprite.Sprite):
         self.screen = screen
         self.player = player
         
-        self.image = pygame.transform.scale(pygame.image.load(os.path.join("background", "wall" + str(index) + ".png")).convert_alpha(), (w, h))
+        self.image = pygame.transform.scale(pygame.image.load(os.path.join("res", "background", "wall" + str(index) + ".png")).convert_alpha(), (w, h))
         self.image.set_colorkey((0, 0, 0))          
         self.rect = self.image.get_rect(topleft = (self.x, self.y))  
         

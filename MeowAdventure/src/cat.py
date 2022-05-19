@@ -1,21 +1,21 @@
 import pygame
 import os
-from agent import agent
-from Mysort import MySort
+from src.agent import agent
+from src.Mysort import MySort
 	
       
 class Cat(agent):
-    
+    """Nhân vật chính của game"""
     def __init__(self, screen, enemy, wall, x = 100, y = 311, hp=10
                  , dmg=1, W_Screen = 900, H_Screen = 500):
         agent.__init__(self, x, y, hp, dmg, W_Screen, H_Screen)
-        self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "run/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "run"))) ]
-                        ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "idle/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "idle"))) ]
-                        ,'jump' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "jump/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "jump"))) ]
-                        ,'attack1' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "attack1/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "attack1"))) ]
-                        ,'attack2' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "attack2/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "attack2"))) ]
-                        ,'takeDmg' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "takeDmg/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "takeDmg"))) ]
-                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "death/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "death"))) ]
+        self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","MeowKnight", "run/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","MeowKnight", "run"))) ]
+                        ,'idle' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","MeowKnight", "idle/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","MeowKnight", "idle"))) ]
+                        ,'jump' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","MeowKnight", "jump/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","MeowKnight", "jump"))) ]
+                        ,'attack1' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","MeowKnight", "attack1/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","MeowKnight", "attack1"))) ]
+                        ,'attack2' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","MeowKnight", "attack2/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","MeowKnight", "attack2"))) ]
+                        ,'takeDmg' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","MeowKnight", "takeDmg/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","MeowKnight", "takeDmg"))) ]
+                        ,'death' : [pygame.transform.scale2x(pygame.image.load(os.path.join("res","MeowKnight", "death/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("res","MeowKnight", "death"))) ]
                         }
         
         self.action = 'idle'
@@ -41,7 +41,8 @@ class Cat(agent):
         self.envGravity = 0
         self.delay = 0
         
-        self.music = pygame.mixer.Sound("Sound/sword-hit.wav")
+        self.sound = {"attack": pygame.mixer.Sound("res/Sound/sword-hit.wav"),
+                      }
         
     def resetAction(self):
         self.index = 0
@@ -53,6 +54,7 @@ class Cat(agent):
         self.isPause = False
     
     def input(self):
+        """Hàm kiểm tra sự kiện bàn phím"""
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
             self.action = 'jump'
@@ -83,7 +85,7 @@ class Cat(agent):
             self.isAttack = True
             self.attack = True
             self.resetAction()
-            pygame.mixer.Sound.play(self.music)
+            pygame.mixer.Sound.play(self.sound['attack'])
 
     def jump(self):
         if self.isJump and not self.envGravity:
@@ -99,6 +101,7 @@ class Cat(agent):
                 self.jumpCount = 15
         
     def apply_velocity(self):
+        """Hàm gia tốc khi giữ chạy"""
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]:
             self.vel += 0.1
@@ -110,6 +113,7 @@ class Cat(agent):
         if self.vel > 3: self.vel = 4
     
     def animations_state(self):
+        """Hàm cập nhật chuyển động """
         if self.isAttack:
             self.framerate = 2 / (20 - len(self.suface[self.action]))
             
@@ -139,6 +143,7 @@ class Cat(agent):
         self.rect = self.image.get_rect(midbottom = (self.x, self.y))
     
     def takeDmg(self, dmg: int):
+        """Hàm nhận sát thương"""
         if self.isVulnerable is True:
             self.isVulnerable = False
             self.setHP(self.getHP() -  dmg)
@@ -160,6 +165,7 @@ class Cat(agent):
         self.isVulnerable = True
 
     def attackDmg(self, sprite):
+        
         if self.delay == 0:
             if self.action == "attack1" and self.attack and int(self.index) == 4:         
                 sprite.takeDmg(self.dmg +1)
@@ -173,6 +179,7 @@ class Cat(agent):
             
             
     def checkCollide(self):
+        """Hàm kiểm tra va chạm giữa quái và người chơi"""
         hits = pygame.sprite.spritecollide(self, self.enemy , False)#get list spire in groups
         for sprite in hits:
             if self.isAttack:
