@@ -6,7 +6,7 @@ from Mysort import MySort
       
 class Cat(agent):
     
-    def __init__(self, screen, enemy, x = 100, y = 313, hp=10
+    def __init__(self, screen, enemy, wall, x = 100, y = 311, hp=10
                  , dmg=1, W_Screen = 900, H_Screen = 500):
         agent.__init__(self, x, y, hp, dmg, W_Screen, H_Screen)
         self.suface = {'run' : [pygame.transform.scale2x(pygame.image.load(os.path.join("MeowKnight", "run/", i)).convert_alpha()) for i in MySort(os.listdir(os.path.join("MeowKnight", "run"))) ]
@@ -36,7 +36,9 @@ class Cat(agent):
         self.alive = True
         self.end = False
         self.enemy = enemy
+        self.wall = wall
         self.isPause = False
+        self.envGravity = 0
         
         self.music = pygame.mixer.Sound("Sound/sword-hit.wav")
         
@@ -83,7 +85,7 @@ class Cat(agent):
             pygame.mixer.Sound.play(self.music)
 
     def jump(self):
-        if self.isJump:
+        if self.isJump and not self.envGravity:
             if self.jumpCount >= -15:
                 neg = 1
                 if self.jumpCount < 0:
@@ -165,14 +167,36 @@ class Cat(agent):
             
     def checkCollide(self):
         hits = pygame.sprite.spritecollide(self, self.enemy , False)#get list spire in groups
-
         for sprite in hits:
             if self.isAttack:
-                
                 self.attackDmg(sprite)
                 #sprite.takeDmg(self.dmg) 
        
-    
+    def envGravityApply(self):
+        objects = pygame.sprite.spritecollide(self, self.wall , False)#get list spire in groups
+        if not objects and not self.isJump:
+            self.envGravity += 1
+            self.y +=  self.envGravity 
+        else:
+            #self.isJump = False
+            for o in objects:
+
+                if self.rect.bottom > o.rect.top + 3 and self.rect.top < o.rect.bottom - 3:
+                    if self.rect.right > o.rect.left and abs(self.rect.right - o.rect.left) < abs(self.rect.right - o.rect.right):
+                        self.x -= 5
+                    elif self.rect.left < o.rect.right:
+                        self.x += 5
+                        
+                if self.rect.right > o.rect.left and self.rect.left < o.rect.right:
+                    if self.rect.bottom > o.rect.top + 1 and abs(self.rect.bottom - o.rect.top) < abs(self.rect.bottom - o.rect.bottom):
+                        self.y = o.rect.top + 1
+                    elif self.rect.top < o.rect.bottom:
+                        self.y += 1
+
+
+            self.envGravity = 0
+
+
     def update(self):
         if self.isPause == False:
             if self.alive:
@@ -181,6 +205,7 @@ class Cat(agent):
                 self.apply_velocity()
                 self.checkHP()
                 self.checkCollide()
+                self.envGravityApply()
                 print("HP", self.getHP(), int(self.index), self.action)
             if not self.end:
                 self.animations_state()

@@ -21,10 +21,11 @@ class Wall(pygame.sprite.Sprite):
             sprite = self.player.sprites()[0]
             if sprite.rect.bottom - self.rect.top <= 10 and sprite.rect.bottom - self.rect.top >= 0 and sprite.rect.center[0] >= self.rect.left and sprite.rect.center[0] <= self.rect.right:
                 sprite.isJump = False
-                sprite.setLocation(sprite.x, self.rect.midtop[1])
+                sprite.setLocation(sprite.x, self.rect.top)
                 sprite.jumpCount = 15
+
     def update(self):
         self.checkCollide()
         #print(self.action, int(self.index))
-        #pygame.draw.rect(self.screen, 'blue', self.rect) 
+        # pygame.draw.rect(self.screen, 'blue', self.rect) 
         

@@ -25,7 +25,7 @@ def main():
     state = States(windowns, player, enemy, portal, wall)
     
     
-    player.add(Cat(windowns, enemy))
+    player.add(Cat(windowns, enemy, wall))
     state.createState()
     
     run = True    

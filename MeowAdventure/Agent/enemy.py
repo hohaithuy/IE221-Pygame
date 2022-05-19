@@ -146,7 +146,7 @@ class Frog(Enemy):
             self.attack = True
             self.resetAction()
         
-        if int(self.index) == 6 and self.attack and self.checkCollide():
+        if int(self.index) >= 6 and self.attack and self.checkCollide():
             sprite.setVulnarable()
             sprite.takeDmg(self.dmg)
             self.attack = False
